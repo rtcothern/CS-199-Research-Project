@@ -2,11 +2,13 @@
 
 #pragma once
 
-#include "GameFramework/Character.h"
+#include "Unit.h"
 #include "Bot.generated.h"
 
+using namespace UP;
+
 UCLASS()
-class RESEARCHPROJECT_API ABot : public ACharacter
+class RESEARCHPROJECT_API ABot : public AUnit
 {
 	GENERATED_BODY()
 
@@ -16,13 +18,11 @@ public:
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+
 	// Called every frame
-	virtual void Tick( float DeltaSeconds ) override;
+	virtual void Tick(float DeltaSeconds) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
-	
-	
 };
