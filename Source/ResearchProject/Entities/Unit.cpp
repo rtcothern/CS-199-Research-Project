@@ -10,7 +10,10 @@ AUnit::AUnit()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	health = 100;
-	mana = 50;
+	primaryResource.type = FResource::Type::MANA;
+	primaryResource.amount = 0;
+	primaryResource.maxAmount = 100;
+	primaryResource.regenRate = 2;
 	speed = 1.0;
 	exp = 0;
 	level = 1;

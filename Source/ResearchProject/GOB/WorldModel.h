@@ -1,25 +1,29 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-#include "Action.h"
 #include <vector>
+#include <memory>
 
-/**
- * 
- */
+using namespace std;
+
+class Action;
+class Goal;
+
 class RESEARCHPROJECT_API WorldModel
 {
+	typedef shared_ptr<Action> spa;
+	typedef shared_ptr<Goal> spg;
 public:
 	WorldModel();
-	WorldModel(std::vector<Action> applicableActions, std::vector<Goal> charGoals);
+	WorldModel(vector<shared_ptr<Action>> applicableActions, vector<shared_ptr<Goal>> charGoals);
 	~WorldModel();
 
-	int32 calculateDC();
-	Action* nextAction();
+	float calculateDC();
+	spa nextAction();
 	void applyAction(Action* action);
 
-protected:
-	std::vector<Action> applicableActions;
-	std::vector<Goal> charGoals;
-	int32 currentActionIndex = 0;
+private:
+	vector<spa> applicableActions;
+	vector<spg> charGoals;
+	uint8 currentActionIndex = 0;
 };

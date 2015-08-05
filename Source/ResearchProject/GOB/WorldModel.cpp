@@ -1,12 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ResearchProject.h"
+#include "Action.h"
+#include "Goal.h"
 #include "WorldModel.h"
 
 WorldModel::WorldModel(){
 
 }
-WorldModel::WorldModel(std::vector<Action> applicableActions, std::vector<Goal> charGoals)
+WorldModel::WorldModel(vector<shared_ptr<Action>> applicableActions, vector<shared_ptr<Goal>> charGoals)
 {
 	this->applicableActions = applicableActions;
 	this->charGoals = charGoals;
@@ -16,16 +18,16 @@ WorldModel::~WorldModel()
 {
 }
 
-int32 WorldModel::calculateDC(){
-	int32 dc = 0;
+float WorldModel::calculateDC(){
+	float dc = 0;
 	for (auto g : charGoals){
-		dc += g.getDC();
+		dc += g->getDC();
 	}
 	return dc;
 }
-Action* WorldModel::nextAction(){
+WorldModel::spa WorldModel::nextAction(){
 	if (currentActionIndex < applicableActions.size()) {
-		return &applicableActions[currentActionIndex++];
+		return applicableActions[currentActionIndex++];
 	}
 	else {
 		 return nullptr;
@@ -34,10 +36,10 @@ Action* WorldModel::nextAction(){
 
 //TODO: Allow for applying an action to disable other actions
 void WorldModel::applyAction(Action* action){
-	for (Goal &g : charGoals){
-		int32 directChange = action->getEffectOnGoal(g.getId());
-		int32 passiveChange = g.getPassiveChange() * action->getDuration();
-		g.modifyInsistence(directChange);
-		g.modifyInsistence(passiveChange);
+	for (spg const g : charGoals){
+		float directChange = action->getEffectOnGoal(g->getId());
+		float passiveChange = g->getPassiveChange() * action->getDuration();
+		g->modifyInsistence(directChange);
+		g->modifyInsistence(passiveChange);
 	}
 }

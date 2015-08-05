@@ -5,6 +5,7 @@
 #include "GameFramework/Actor.h"
 #include "Unit.generated.h"
 
+
 UENUM(BlueprintType)		//"BlueprintType" is essential to include
 enum class ETeam_Enum : uint8
 {
@@ -13,6 +14,17 @@ enum class ETeam_Enum : uint8
 	teamNone	UMETA(DisplayName = "teamNone")
 };
 
+USTRUCT()
+struct RESEARCHPROJECT_API FResource{
+	GENERATED_BODY()
+	uint32 amount;
+	uint32 maxAmount;
+	enum class Type	{
+		MANA,
+		OTHER
+	} type;
+	uint32 regenRate;
+};
 UCLASS()
 class RESEARCHPROJECT_API AUnit : public ACharacter
 {
@@ -38,7 +50,7 @@ public:
 	float speed;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Stats)
-	int32 mana;
+	FResource primaryResource;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Progression)
 	int32 exp;

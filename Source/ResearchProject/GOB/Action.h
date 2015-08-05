@@ -1,8 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
-#include "Goal.h"
 #include <unordered_map>
 
 /**
@@ -11,19 +9,21 @@
 class RESEARCHPROJECT_API Action
 {
 public:
-	Action(String name, int32 durationMS);
+	Action(FName name, float duration);
 	Action();
 	~Action();
 
-	int32 getEffectOnGoal(const int32 &goalId);
-	int32 getDuration();
-	void addGoalEffect(int32 goalId, int32 delta);
+	//Retrieve the actions effect on this specific goal (if any)
+	float getEffectOnGoal(const uint16 &goalId);
+
+	//Get the duration of the action in minutes
+	float getDuration();
+
+	//Add a pairing of a goal and an effect
+	void addGoalEffect(uint16 goalId, float delta);
 
 protected:
-	/**
-	The amount of milliseconds this action will take
-	*/
-	int32 durationMS;
-	String name;
-	std::unordered_map<int32, int32> goalEffects;
+	float duration;
+	FName name;
+	std::unordered_map<uint16, float> goalEffects;
 };

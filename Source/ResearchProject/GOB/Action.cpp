@@ -3,28 +3,27 @@
 #include "ResearchProject.h"
 #include "Action.h"
 
-Action::Action(String name, int32 durationMS) : goalEffects()
-{
+Action::Action(FName name, float duration){
 	this->name = name;
-	this->durationMS = durationMS;
+	this->duration = duration;
 }
-Action::Action() : goalEffects()
+Action::Action()
 {
-	durationMS = 0;
+	duration = 0;
 }
 
 Action::~Action()
 {
 }
 
-int32 Action::getEffectOnGoal(const int32 &goalId){
+float Action::getEffectOnGoal(const uint16 &goalId){
 	return goalEffects[goalId];
 }
-int32 Action::getDuration(){
-	return durationMS;
+float Action::getDuration(){
+	return duration;
 }
 
-void Action::addGoalEffect(int32 goalId, int32 delta){
+void Action::addGoalEffect(uint16 goalId, float delta){
 	goalEffects.emplace(goalId, delta);
 }
 

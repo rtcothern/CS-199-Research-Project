@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ResearchProject.h"
+#include "WorldModel.h"
+#include "Action.h"
 #include "ActionPlanner.h"
 #include <stack>
 
@@ -41,7 +43,7 @@ Action ActionPlanner::planAction(const WorldModel& world, const int32& maxDepth)
 			}
 		}
 
-		Action* nextAction = worlds[currentDepth].nextAction();
+		Action* nextAction = worlds[currentDepth].nextAction().get();
 		if (nextAction){
 			WorldModel nextWorld(worlds[currentDepth]);
 			actions[currentDepth] = *nextAction;

@@ -1,18 +1,19 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ResearchProject.h"
+#include "Action.h"
 #include "Goal.h"
 
-int32 Goal::highestId = 0;
+uint16 Goal::highestId = 0;
 // Sets default values
-Goal::Goal(String name)
+Goal::Goal(FName name)
 {
 	this->name = name;
 	insistence = 0;
 	changePerMinute = 0;
 	id = highestId++;
 }
-Goal::Goal(String name, int32 insist)
+Goal::Goal(FName name, float insist)
 {
 	this->name = name;
 	insistence = insist;
@@ -20,18 +21,17 @@ Goal::Goal(String name, int32 insist)
 	id = highestId++;
 }
 
-int32 Goal::getDC(){
+float Goal::getDC(){
 	return insistence*insistence;
 }
-int32 Goal::getDCFromNewInsist(int32 newVal){
-	return newVal*newVal;
-}
 
-int32 Goal::getPassiveChange(){
+float Goal::getPassiveChange(){
 	return changePerMinute;
 }
-int32 Goal::getId(){
+uint16 Goal::getId(){
 	return id;
 }
+void applyAction(const Action & action){
 
+}
 
