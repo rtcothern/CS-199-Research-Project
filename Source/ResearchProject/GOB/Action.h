@@ -14,10 +14,10 @@ public:
 	~Action();
 
 	//Retrieve the actions effect on this specific goal (if any)
-	float getEffectOnGoal(const uint16 &goalId);
+	float getEffectOnGoal(const uint16 goalId) const;
 
 	//Get the duration of the action in minutes
-	float getDuration();
+	float getDuration() const;
 
 	//Add a pairing of a goal and an effect
 	void addGoalEffect(uint16 goalId, float delta);

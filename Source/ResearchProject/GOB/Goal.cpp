@@ -31,7 +31,10 @@ float Goal::getPassiveChange(){
 uint16 Goal::getId(){
 	return id;
 }
-void applyAction(const Action & action){
-
+void Goal::applyAction(const Action & action){
+	float directChange = action.getEffectOnGoal(id);
+	float passiveChange = changePerMinute * action.getDuration();
+	insistence += directChange;
+	insistence += passiveChange;
 }
 

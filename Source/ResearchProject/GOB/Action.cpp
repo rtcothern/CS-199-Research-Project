@@ -16,10 +16,17 @@ Action::~Action()
 {
 }
 
-float Action::getEffectOnGoal(const uint16 &goalId){
-	return goalEffects[goalId];
+float Action::getEffectOnGoal(const uint16 goalId) const{
+	float effect;
+	try{
+		effect = goalEffects.at(goalId);
+	}
+	catch(std::out_of_range e){
+		effect = 0;//this just means there's no effect
+	}
+	return effect;
 }
-float Action::getDuration(){
+float Action::getDuration() const{
 	return duration;
 }
 
