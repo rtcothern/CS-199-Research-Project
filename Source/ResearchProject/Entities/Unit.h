@@ -3,28 +3,12 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "UnitProperties.h"
+#include <vector>
 #include "Unit.generated.h"
 
+class Action;
 
-UENUM(BlueprintType)		//"BlueprintType" is essential to include
-enum class ETeam_Enum : uint8
-{
-	team1 	UMETA(DisplayName = "team1"),
-	team2 	UMETA(DisplayName = "team2"),
-	teamNone	UMETA(DisplayName = "teamNone")
-};
-
-USTRUCT()
-struct RESEARCHPROJECT_API FResource{
-	GENERATED_BODY()
-	uint32 amount;
-	uint32 maxAmount;
-	enum class Type	{
-		MANA,
-		OTHER
-	} type;
-	uint32 regenRate;
-};
 UCLASS()
 class RESEARCHPROJECT_API AUnit : public ACharacter
 {
@@ -34,7 +18,7 @@ public:
 	// Sets default values for this actor's properties
 	AUnit();
 
-	// Called when the game starts or when spawned
+	// Called when the game starts or when Actionwned
 	virtual void BeginPlay() override;
 	
 	// Called every frame
@@ -59,5 +43,8 @@ public:
 	int32 level;
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
+	std::vector<Action*> getExposedActions();
 
+private:
+	std::vector<Action*> exposedActions;
 };

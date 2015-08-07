@@ -34,4 +34,5 @@ protected:
 	uint16 id;
 	static uint16 highestId;
 	FName name;
+	bool bEnabled;
 };

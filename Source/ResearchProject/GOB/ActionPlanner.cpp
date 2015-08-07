@@ -43,7 +43,7 @@ Action ActionPlanner::planAction(const WorldModel& world, const int32& maxDepth)
 			}
 		}
 
-		Action* nextAction = worlds[currentDepth].nextAction().get();
+		Action* nextAction = worlds[currentDepth].nextAction();
 		if (nextAction){
 			WorldModel nextWorld(worlds[currentDepth]);
 			actions[currentDepth] = *nextAction;

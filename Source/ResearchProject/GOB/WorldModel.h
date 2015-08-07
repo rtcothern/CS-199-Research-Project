@@ -2,28 +2,29 @@
 
 #pragma once
 #include <vector>
-#include <memory>
+#include "Action.h"
+#include "Goal.h"
+#include "../Entities/UnitProperties.h"
 
 using namespace std;
 
-class Action;
-class Goal;
 
 class RESEARCHPROJECT_API WorldModel
 {
-	typedef shared_ptr<Action> spa;
-	typedef shared_ptr<Goal> spg;
 public:
 	WorldModel();
-	WorldModel(vector<shared_ptr<Action>> applicableActions, vector<shared_ptr<Goal>> charGoals);
+	WorldModel(vector<Action> applicableActions, vector<Goal> charGoals, FResource charResource);
 	~WorldModel();
 
 	float calculateDC();
-	spa nextAction();
+	Action* nextAction();
 	void applyAction(Action* action);
 
+	//void setResource(uint)
+
 private:
-	vector<spa> applicableActions;
-	vector<spg> charGoals;
+	vector<Action> applicableActions;
+	vector<Goal> charGoals;
 	uint8 currentActionIndex = 0;
+	FResource charResource;
 };
