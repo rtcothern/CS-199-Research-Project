@@ -4,7 +4,10 @@
 
 #include "GameFramework/Actor.h"
 #include "UnitProperties.h"
+#include <vector>
 #include "Unit.generated.h"
+
+class Action;
 
 UCLASS()
 class RESEARCHPROJECT_API AUnit : public ACharacter
@@ -40,5 +43,8 @@ public:
 	int32 level;
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
+	std::vector<Action*> getExposedActions();
 
+private:
+	std::vector<Action*> exposedActions;
 };

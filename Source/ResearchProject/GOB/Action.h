@@ -10,6 +10,7 @@ class RESEARCHPROJECT_API Action
 {
 public:
 	Action(FName name, float duration);
+	Action(FName name, float duration, uint16 resourceCost);
 	Action();
 	~Action();
 
@@ -22,8 +23,11 @@ public:
 	//Add a pairing of a goal and an effect
 	void addGoalEffect(uint16 goalId, float delta);
 
+	uint16 getResourceCost();
+
 protected:
 	float duration;
 	FName name;
 	std::unordered_map<uint16, float> goalEffects;
+	uint16 resourceCost;
 };

@@ -6,10 +6,11 @@
 WorldModel::WorldModel(){
 
 }
-WorldModel::WorldModel(vector<Action> applicableActions, vector<Goal> charGoals)
+WorldModel::WorldModel(vector<Action> applicableActions, vector<Goal> charGoals, FResource charResource)
 {
 	this->applicableActions = applicableActions;
 	this->charGoals = charGoals;
+	this->charResource = charResource;
 }
 
 WorldModel::~WorldModel()
@@ -24,20 +25,28 @@ float WorldModel::calculateDC(){
 	return dc;
 }
 Action* WorldModel::nextAction(){
-	if (currentActionIndex < applicableActions.size()) {
+	//Only consider actions the character possesses enough resource to execute
+	while (applicableActions[currentActionIndex].getResourceCost() > charResource.amount){
+		currentActionIndex++;
+	}
+	//If we haven't run out of actions
+	if (currentActionIndex < applicableActions.size()){
 		return &applicableActions[currentActionIndex++];
 	}
+	//Otherwise there are no actions left to consider
 	else {
 		 return nullptr;
 	}
 }
 
-//TODO: Allow for applying an action to disable other actions
 void WorldModel::applyAction(Action* action){
 	for (auto & g : charGoals){
 		g.applyAction(*action);
 	}
-	for (auto &a : applicableActions){
-		/*if ()*/
-	}
+
+	//Manage the characters resource as a result of the action's cost and duration
+	charResource.amount -= action->getResourceCost();
+	charResource.amount += charResource.regenRate*action->getDuration();
+	if (charResource.amount > charResource.maxAmount)
+		charResource.amount = charResource.maxAmount;
 }

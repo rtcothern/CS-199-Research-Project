@@ -6,9 +6,18 @@
 Action::Action(FName name, float duration){
 	this->name = name;
 	this->duration = duration;
+	resourceCost = 0;
 }
+
+Action::Action(FName name, float duration, uint16 resourceCost){
+	this->name = name;
+	this->duration = duration;
+	this->resourceCost = resourceCost;
+}
+
 Action::Action()
 {
+	resourceCost = 0;
 	duration = 0;
 }
 
@@ -33,5 +42,10 @@ float Action::getDuration() const{
 void Action::addGoalEffect(uint16 goalId, float delta){
 	goalEffects.emplace(goalId, delta);
 }
+
+uint16 Action::getResourceCost(){
+	return resourceCost;
+}
+
 
 

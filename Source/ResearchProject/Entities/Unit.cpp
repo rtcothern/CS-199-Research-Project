@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ResearchProject.h"
+#include "../GOB/Action.h"
 #include "Unit.h"
 
 
@@ -37,4 +38,8 @@ void AUnit::Tick(float DeltaTime)
 float AUnit::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser){
 	health -= DamageAmount;
 	return health;
+}
+
+std::vector<Action*> AUnit::getExposedActions(){
+	return exposedActions;
 }
