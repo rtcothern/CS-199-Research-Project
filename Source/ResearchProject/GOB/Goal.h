@@ -8,31 +8,25 @@ class RESEARCHPROJECT_API Goal
 {
 	
 public:	
-	// Sets default values for this actor's properties
-	Goal(FName name);
-	Goal(FName name, float insist);
-	Goal(){ id = highestId++; };
 	~Goal(){};
+	Goal(){};
+	Goal(float startingInsistence);
 
 	//Calculate the current discontentment contribution from this goal
-	float getDC();
+	float getDC() const;
 
 	//Get the passive change per minute in this goal
-	float getPassiveChange();
+	float getPassiveChange() const { return changePerMinute; };
 
-	//Retrieve this goals unique ID
-	uint16 getId();
+	uint16 getId() const { return id; };
+	float getInsistence() const { return insistence; };
 
 	//Apply the specified action to this goal and observe its effect
-	void applyAction(const Action & action);
-
-	void modifyInsistence(float delta){ insistence += delta; };
+	virtual void applyAction(Action *action);
 
 protected:
-	float insistence;
-	float changePerMinute;
+	float insistence, changePerMinute;
 	uint16 id;
 	static uint16 highestId;
-	FName name;
 	bool bEnabled;
 };

@@ -2,6 +2,7 @@
 
 #include "ResearchProject.h"
 #include "../GOB/Action.h"
+#include "../GOB/Action_Kill.h"
 #include "Unit.h"
 
 
@@ -24,8 +25,9 @@ AUnit::AUnit()
 // Called when the game starts or when spawned
 void AUnit::BeginPlay()
 {
+	Action_Kill killAction = Action_Kill(expWorth, goldWorth);
+	exposedActions.Emplace(killAction);
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -40,6 +42,3 @@ float AUnit::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEve
 	return health;
 }
 
-std::vector<Action*> AUnit::getExposedActions(){
-	return exposedActions;
-}

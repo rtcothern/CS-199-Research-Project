@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Unit.h"
+#include "../GOB/WorldModel.h"
 #include "Bot.generated.h"
 
 using namespace UP;
@@ -15,6 +16,7 @@ class RESEARCHPROJECT_API ABot : public AUnit
 public:
 	// Sets default values for this character's properties
 	ABot();
+	~ABot();
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -25,4 +27,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
+	void executeNextAction();
+
+protected:
+	class ActionPlanner* planner;
+	WorldModel worldModel;
 };

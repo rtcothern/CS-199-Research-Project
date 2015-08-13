@@ -3,31 +3,29 @@
 #pragma once
 #include <unordered_map>
 
+class Goal;
 /**
  * 
  */
 class RESEARCHPROJECT_API Action
 {
 public:
-	Action(FName name, float duration);
-	Action(FName name, float duration, uint16 resourceCost);
-	Action();
 	~Action();
-
-	//Retrieve the actions effect on this specific goal (if any)
-	float getEffectOnGoal(const uint16 goalId) const;
-
+	Action();
 	//Get the duration of the action in minutes
 	float getDuration() const;
 
-	//Add a pairing of a goal and an effect
-	void addGoalEffect(uint16 goalId, float delta);
-
 	uint16 getResourceCost();
 
+	virtual float getExpEffect(uint16 currentExp) { return 0; };
+	virtual float getGoldEffect(uint16 currentGold) { return 0; };
+	virtual float getLiveEffect(const Goal* goal) { return 0; };
+	virtual float getPushEffect(const Goal* goal) { return 0; };
+
 protected:
+	Action(float duration);
+	Action(float duration, uint16 resourceCost);
+	
 	float duration;
-	FName name;
-	std::unordered_map<uint16, float> goalEffects;
 	uint16 resourceCost;
 };

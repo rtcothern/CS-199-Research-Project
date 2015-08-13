@@ -5,36 +5,18 @@
 #include "Goal.h"
 
 uint16 Goal::highestId = 0;
-// Sets default values
-Goal::Goal(FName name)
+Goal::Goal(float startingInsistence)
 {
-	this->name = name;
-	insistence = 0;
+	insistence = startingInsistence;
 	changePerMinute = 0;
 	id = highestId++;
 }
-Goal::Goal(FName name, float insist)
-{
-	this->name = name;
-	insistence = insist;
-	changePerMinute = 0;
-	id = highestId++;
-}
-
-float Goal::getDC(){
+float Goal::getDC() const{
 	return insistence*insistence;
 }
 
-float Goal::getPassiveChange(){
-	return changePerMinute;
-}
-uint16 Goal::getId(){
-	return id;
-}
-void Goal::applyAction(const Action & action){
-	float directChange = action.getEffectOnGoal(id);
-	float passiveChange = changePerMinute * action.getDuration();
-	insistence += directChange;
+
+void Goal::applyAction(Action * action){
+	float passiveChange = changePerMinute * action->getDuration();
 	insistence += passiveChange;
 }
-
