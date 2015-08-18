@@ -17,7 +17,7 @@ public:
 
 	uint16 getResourceCost();
 
-	virtual float getExpEffect(uint16 currentExp) { return 0; };
+	virtual float getExpEffect(uint16 expNeededForLevel) { return 0; };
 	virtual float getGoldEffect(uint16 currentGold) { return 0; };
 	virtual float getLiveEffect(const Goal* goal) { return 0; };
 	virtual float getPushEffect(const Goal* goal) { return 0; };

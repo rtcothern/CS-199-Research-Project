@@ -6,10 +6,15 @@
 WorldModel::WorldModel(){
 
 }
-WorldModel::WorldModel(TArray<Goal> & charGoals, FResource charResource)
+WorldModel::WorldModel(const WorldModel & copy){
+	this->charGoals = copy.charGoals;
+	this->applicableActions = copy.applicableActions;
+	//this->charResource = copy.charResource;
+	this->currentActionIndex = 0;
+}
+WorldModel::WorldModel(TArray<Goal*> charGoals)// , FResource charResource)
 {
 	this->charGoals = charGoals;
-	this->charResource = charResource;
 }
 
 WorldModel::~WorldModel()
@@ -19,15 +24,15 @@ WorldModel::~WorldModel()
 float WorldModel::calculateDC(){
 	float dc = 0;
 	for (auto g : charGoals){
-		dc += g.getDC();
+		dc += g->getDC();
 	}
 	return dc;
 }
 Action* WorldModel::nextAction(){
 	//Only consider actions the character possesses enough resource to execute
-	while (applicableActions[currentActionIndex]->getResourceCost() > charResource.amount){
+	/*while (currentActionIndex < applicableActions.Num() && applicableActions[currentActionIndex]->getResourceCost() > charResource.amount){
 		currentActionIndex++;
-	}
+	}*/
 	//If we haven't run out of actions
 	if (currentActionIndex < applicableActions.Num()){
 		return applicableActions[currentActionIndex++];
@@ -40,12 +45,16 @@ Action* WorldModel::nextAction(){
 
 void WorldModel::applyAction(Action* action){
 	for (auto & g : charGoals){
-		g.applyAction(action);
+		g->applyAction(action);
 	}
 
 	//Manage the characters resource as a result of the action's cost and duration
-	charResource.amount -= action->getResourceCost();
+	/*charResource.amount -= action->getResourceCost();
 	charResource.amount += charResource.regenRate*action->getDuration();
 	if (charResource.amount > charResource.maxAmount)
-		charResource.amount = charResource.maxAmount;
+		charResource.amount = charResource.maxAmount;*/
+}
+
+void WorldModel::setActions(TArray<Action*> actions){
+	applicableActions = actions;
 }

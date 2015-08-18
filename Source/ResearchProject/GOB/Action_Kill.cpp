@@ -13,17 +13,15 @@ Action_Kill::~Action_Kill()
 {
 }
 
-float Action_Kill::getExpEffect(uint16 currentExp) {
+float Action_Kill::getExpEffect(uint16 expNeededForLevel) {
 	float result = 0;
-	float ratio = expGain / currentExp;
-	result = ratio * CONSTANTS::MAX_INSISTENCE;
-	return -result;
+	float ratio = expGain / expNeededForLevel;
+	return ratio;
 };
 float Action_Kill::getGoldEffect(uint16 currentGold) {
 	float result = 0;
 	float ratio = goldGain / currentGold;
-	result = ratio * CONSTANTS::MAX_INSISTENCE;
-	return -result;
+	return ratio;
 };
 //float Action_Kill::getLiveEffect(const Goal* goal) {
 //

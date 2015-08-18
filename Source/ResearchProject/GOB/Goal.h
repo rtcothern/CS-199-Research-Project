@@ -25,6 +25,7 @@ public:
 	virtual void applyAction(Action *action);
 
 protected:
+	const float maxInsistence = 10;
 	float insistence, changePerMinute;
 	uint16 id;
 	static uint16 highestId;

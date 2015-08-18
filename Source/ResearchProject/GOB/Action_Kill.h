@@ -7,7 +7,7 @@ public:
 	Action_Kill(uint16 expGain, uint16 goldGain);
 	~Action_Kill();
 
-	virtual float getExpEffect(uint16 currentExp);
+	virtual float getExpEffect(uint16 expNeededForLevel);
 	virtual float getGoldEffect(uint16 currentGold);
 	/*virtual float getLiveEffect(const Goal* goal);
 	virtual float getPushEffect(const Goal* goal);

@@ -7,8 +7,6 @@
 #include "../GOB/Action.h"
 #include "Unit.generated.h"
 
-using namespace UP;
-
 UCLASS()
 class RESEARCHPROJECT_API AUnit : public ACharacter
 {
@@ -17,15 +15,15 @@ class RESEARCHPROJECT_API AUnit : public ACharacter
 public:	
 	// Sets default values for this actor's properties
 	AUnit();
-
+	virtual ~AUnit() { delete progression; };
 	// Called when the game starts or when Actionwned
 	virtual void BeginPlay() override;
 	
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit_Team)
-	ETeam_Enum teamEnum;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit_Properties)
+	Attributes::FProgression* progression;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
 	int32 health;
@@ -33,22 +31,12 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
 	float speed;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
-	FResource primaryResource;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Progression)
-	int32 exp;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Progression)
-	int32 level;
-
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
 	
-	//UFUNCTION(BlueprintCallable, Category = Unit_Actions)
-	TArray<Action> getExposedActions() { return exposedActions; };
+	TArray<Action*> getExposedActions() { return exposedActions; };
 
 protected:
-	TArray<Action> exposedActions;
+	TArray<Action*> exposedActions;
 	uint16 expWorth, goldWorth;
 	uint16 effectiveDPS;
 };

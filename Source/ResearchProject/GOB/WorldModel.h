@@ -10,18 +10,19 @@ class RESEARCHPROJECT_API WorldModel
 {
 public:
 	WorldModel();
-	WorldModel(TArray<Goal> & charGoals, FResource charResource);
+	WorldModel(TArray<Goal*> charGoals);// , FResource charResource);
+	WorldModel(const WorldModel & copy);
 	~WorldModel();
 
 	float calculateDC();
 	Action* nextAction();
 	void applyAction(Action* action);
-
+	void setActions(TArray<Action*> actions);
 	//void setResource(uint)
 
 private:
 	TArray<Action*> applicableActions;
-	TArray<Goal> charGoals;
+	TArray<Goal*> charGoals;
 	uint8 currentActionIndex = 0;
-	FResource charResource;
+	//FResource charResource;
 };

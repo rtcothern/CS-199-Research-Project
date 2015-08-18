@@ -16,7 +16,7 @@ ActionPlanner::~ActionPlanner()
 
 Action* ActionPlanner::planAction(const WorldModel& world, const int32& maxDepth){
 	WorldModel* worlds = new WorldModel[maxDepth+1];
-	Action* actions = new Action[maxDepth];
+	Action** actions = new Action*[maxDepth];
 
 	worlds[0] = world;
 	int32 currentDepth = 0;
@@ -36,17 +36,17 @@ Action* ActionPlanner::planAction(const WorldModel& world, const int32& maxDepth
 		if (currentDepth >= maxDepth){
 			if (currentDC < bestDC){
 				bestDC = currentDC;
-				bestAction = &actions[0];
-				currentDepth--;
-				heurDCS.pop();
-				continue;
+				bestAction = actions[0];
 			}
+			currentDepth--;
+			heurDCS.pop();
+			continue;
 		}
 
 		Action* nextAction = worlds[currentDepth].nextAction();
 		if (nextAction){
 			WorldModel nextWorld(worlds[currentDepth]);
-			actions[currentDepth] = *nextAction;
+			actions[currentDepth] = nextAction;
 			nextWorld.applyAction(nextAction);
 			worlds[currentDepth + 1] = nextWorld;
 			currentDepth++;

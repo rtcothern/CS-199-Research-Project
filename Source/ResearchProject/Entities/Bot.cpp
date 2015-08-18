@@ -7,16 +7,22 @@
 #include "EngineUtils.h"
 #include "Bot.h"
 
+#include <sstream>
+#include <string>
+
 
 // Sets default values
-ABot::ABot()
+ABot::ABot() : AUnit()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Constructed a bot!"));
 	PrimaryActorTick.bCanEverTick = true;
-	TArray<Goal> goals;
-	Goal g = Goal_Exp();
+
+	progression = new Attributes::FParagonProgression();
+
+	TArray<Goal*> goals;
+	Goal *g = new Goal_Exp(((Attributes::FParagonProgression*)progression)->getExpForNextLevel());
 	goals.Emplace(g);
-	worldModel = WorldModel(goals, primaryResource);
+
+	worldModel = WorldModel(goals);
 }
 ABot::~ABot(){
 	delete planner;
@@ -25,7 +31,8 @@ ABot::~ABot(){
 // Called when the game starts or when spawned
 void ABot::BeginPlay()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Bot is beginning to play!"));
+	//UE_LOG(LogTemp, Warning, TEXT("Bot is beginning to play!"));
+
 	planner = new ActionPlanner();
 	Super::BeginPlay();
 }
@@ -37,17 +44,20 @@ void ABot::Tick( float DeltaTime )
 
 }
 
-// Called to bind functionality to input
-void ABot::SetupPlayerInputComponent(class UInputComponent* InputComponent)
-{
-	Super::SetupPlayerInputComponent(InputComponent);
-
-}
+//// Called to bind functionality to input
+//void ABot::SetupPlayerInputComponent(class UInputComponent* InputComponent)
+//{
+//	Super::SetupPlayerInputComponent(InputComponent);
+//
+//}
 
 void ABot::executeNextAction(){
-	TArray<Action> possibleActions;
+	TArray<Action*> possibleActions;
 	for (TActorIterator<AUnit> unitItr(GetWorld()); unitItr; ++unitItr){
-		possibleActions.Append(unitItr->getExposedActions());
+		if (unitItr->GetUniqueID() != this->GetUniqueID())
+			possibleActions.Append(unitItr->getExposedActions());
 	}
+	worldModel.setActions(possibleActions);
 	Action* nextAction = planner->planAction(worldModel, 5);
+
 }

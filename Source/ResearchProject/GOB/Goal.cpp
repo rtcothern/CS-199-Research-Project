@@ -19,4 +19,10 @@ float Goal::getDC() const{
 void Goal::applyAction(Action * action){
 	float passiveChange = changePerMinute * action->getDuration();
 	insistence += passiveChange;
+	if (insistence > maxInsistence){
+		insistence = maxInsistence;
+	}
+	else if (insistence < 0){
+		insistence = 0;
+	}
 }
