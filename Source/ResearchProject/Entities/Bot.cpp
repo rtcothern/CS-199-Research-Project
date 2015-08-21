@@ -4,25 +4,15 @@
 #include "../GOB/Action.h"
 #include "../GOB/ActionPlanner.h"
 #include "../GOB/Goal_Exp.h"
+#include "../GOB/Goal_Gold.h"
 #include "EngineUtils.h"
 #include "Bot.h"
-
-#include <sstream>
-#include <string>
 
 
 // Sets default values
 ABot::ABot() : AUnit()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-	progression = new Attributes::FParagonProgression();
-
-	TArray<Goal*> goals;
-	Goal *g = new Goal_Exp(((Attributes::FParagonProgression*)progression)->getExpForNextLevel());
-	goals.Emplace(g);
-
-	worldModel = WorldModel(goals);
 }
 ABot::~ABot(){
 	delete planner;
@@ -31,9 +21,17 @@ ABot::~ABot(){
 // Called when the game starts or when spawned
 void ABot::BeginPlay()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("Bot is beginning to play!"));
+	progression = new FParagonProgression();
+
+	TArray<Goal*> goals;
+	Goal *g1 = new Goal_Exp(((FParagonProgression*)progression)->getExpForNextLevel());
+	Goal *g2 = new Goal_Gold(((FParagonProgression*)progression)->gold);
+	goals.Emplace(g1);
+
+	worldModel = WorldModel(goals);
 
 	planner = new ActionPlanner();
+
 	Super::BeginPlay();
 }
 
@@ -41,7 +39,6 @@ void ABot::BeginPlay()
 void ABot::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-
 }
 
 //// Called to bind functionality to input

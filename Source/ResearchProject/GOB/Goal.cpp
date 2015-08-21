@@ -5,10 +5,14 @@
 #include "Goal.h"
 
 uint16 Goal::highestId = 0;
-Goal::Goal(float startingInsistence)
+//Goal::Goal(float startingInsistence, float changePerMinute)
+//{
+//	insistence = startingInsistence;
+//	this->changePerMinute = changePerMinute;
+//	id = highestId++;
+//}
+Goal::Goal()
 {
-	insistence = startingInsistence;
-	changePerMinute = 0;
 	id = highestId++;
 }
 float Goal::getDC() const{

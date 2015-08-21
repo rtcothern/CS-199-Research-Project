@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
 class Action;
 
 class RESEARCHPROJECT_API Goal
@@ -9,11 +8,11 @@ class RESEARCHPROJECT_API Goal
 	
 public:	
 	~Goal(){};
-	Goal(){};
-	Goal(float startingInsistence);
+	Goal();
+	//Goal(float startingInsistence, float changePerMinute);
 
 	//Calculate the current discontentment contribution from this goal
-	float getDC() const;
+	virtual float getDC() const;
 
 	//Get the passive change per minute in this goal
 	float getPassiveChange() const { return changePerMinute; };
@@ -23,6 +22,8 @@ public:
 
 	//Apply the specified action to this goal and observe its effect
 	virtual void applyAction(Action *action);
+
+	virtual void update(class AUnit* character) = 0;
 
 protected:
 	const float maxInsistence = 10;

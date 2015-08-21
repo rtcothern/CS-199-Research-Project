@@ -21,9 +21,6 @@ public:
 	
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit_Properties)
-	Attributes::FProgression* progression;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
 	int32 health;
@@ -34,6 +31,9 @@ public:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
 	
 	TArray<Action*> getExposedActions() { return exposedActions; };
+
+	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
+	FProgression* progression;
 
 protected:
 	TArray<Action*> exposedActions;

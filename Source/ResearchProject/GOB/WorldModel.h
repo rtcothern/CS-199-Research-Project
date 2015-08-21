@@ -18,7 +18,7 @@ public:
 	Action* nextAction();
 	void applyAction(Action* action);
 	void setActions(TArray<Action*> actions);
-	//void setResource(uint)
+	void updateGoals(class Unit *character);
 
 private:
 	TArray<Action*> applicableActions;

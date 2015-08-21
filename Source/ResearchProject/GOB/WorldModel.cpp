@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ResearchProject.h"
+#include "../Entities/Unit.h"
 #include "WorldModel.h"
 
 WorldModel::WorldModel(){
@@ -57,4 +58,10 @@ void WorldModel::applyAction(Action* action){
 
 void WorldModel::setActions(TArray<Action*> actions){
 	applicableActions = actions;
+}
+
+void WorldModel::updateGoals(Unit *character){
+	for (auto g : charGoals){
+
+	}
 }

@@ -26,6 +26,7 @@ void AUnit::BeginPlay()
 // Called every frame
 void AUnit::Tick(float DeltaTime)
 {
+	progression->Tick(DeltaTime);
 	Super::Tick( DeltaTime );
 
 }
