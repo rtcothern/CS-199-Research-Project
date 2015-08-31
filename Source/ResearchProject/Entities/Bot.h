@@ -18,6 +18,12 @@ public:
 	ABot();
 	~ABot();
 
+	/*UENUM(BlueprintType)
+	enum class EBehavior_Type : uint8
+	{
+		ATTACK 	UMETA(DisplayName = "team1"),
+	};*/
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -29,6 +35,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Unit_Actions)
 	void executeNextAction();
+
+	UFUNCTION(BlueprintNativeEvent, Category = Unit_Behavior)
+	void runAttackBehavior(AUnit* target);
 
 protected:
 	class ActionPlanner* planner;

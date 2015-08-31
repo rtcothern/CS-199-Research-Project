@@ -33,3 +33,8 @@ AResearchProjectCharacter::AResearchProjectCharacter()
 	TopDownCameraComponent->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 }
+
+void AResearchProjectCharacter::BeginPlay(){
+	progression = new FParagonProgression();
+	Super::BeginPlay();
+}

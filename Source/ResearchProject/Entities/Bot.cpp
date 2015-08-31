@@ -27,6 +27,7 @@ void ABot::BeginPlay()
 	Goal *g1 = new Goal_Exp(((FParagonProgression*)progression)->getExpForNextLevel());
 	Goal *g2 = new Goal_Gold(((FParagonProgression*)progression)->gold);
 	goals.Emplace(g1);
+	goals.Emplace(g2);
 
 	worldModel = WorldModel(goals);
 
@@ -56,5 +57,9 @@ void ABot::executeNextAction(){
 	}
 	worldModel.setActions(possibleActions);
 	Action* nextAction = planner->planAction(worldModel, 5);
+	nextAction->executeAction(this);
+}
+
+void ABot::runAttackBehavior_Implementation(AUnit* target){
 
 }

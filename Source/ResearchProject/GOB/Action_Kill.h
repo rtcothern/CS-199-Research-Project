@@ -4,15 +4,17 @@
 class RESEARCHPROJECT_API Action_Kill : public Action
 {
 public:
-	Action_Kill(uint16 expGain, uint16 goldGain);
+	Action_Kill(float expGain, float goldGain, class AUnit *target);
 	~Action_Kill();
 
-	virtual float getExpEffect(uint16 expNeededForLevel);
-	virtual float getGoldEffect(uint16 currentGold);
+	float getExpEffect(float expNeededForLevel);
+	float getGoldEffect(float currentGold);
 	/*virtual float getLiveEffect(const Goal* goal);
 	virtual float getPushEffect(const Goal* goal);
-*/
+	*/
+	void executeAction(class ABot *executor);
 private:
-	uint16 expGain, goldGain;
+	float expGain, goldGain;
+	class AUnit *target;
 };
 

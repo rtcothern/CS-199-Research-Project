@@ -13,12 +13,15 @@ AUnit::AUnit()
 	PrimaryActorTick.bCanEverTick = true;
 	health = 100;
 	speed = 1.0;
+	attackDamage = 5;
+	attackSpeed = 1.25;
+	attackRange = 300;
 }
 
 // Called when the game starts or when spawned
 void AUnit::BeginPlay()
 {
-	Action_Kill *killAction = new Action_Kill(progression->getExpKillWorth(), progression->getGoldKillWorth());
+	Action_Kill *killAction = new Action_Kill(progression->getExpKillWorth(), progression->getGoldKillWorth(), this);
 	exposedActions.Emplace(killAction);
 	Super::BeginPlay();
 }

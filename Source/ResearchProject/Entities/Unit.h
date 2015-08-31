@@ -24,9 +24,16 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
 	int32 health;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
 	float speed;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
+	int32 attackDamage;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
+	float attackSpeed;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
+	float attackRange;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
+	ETeam_Enum team;
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
 	
@@ -34,6 +41,8 @@ public:
 
 	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
 	FProgression* progression;
+
+	
 
 protected:
 	TArray<Action*> exposedActions;
