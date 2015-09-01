@@ -56,8 +56,8 @@ void ABot::executeNextAction(){
 			possibleActions.Append(unitItr->getExposedActions());
 	}
 	worldModel.setActions(possibleActions);
-	Action* nextAction = planner->planAction(worldModel, 5);
-	nextAction->executeAction(this);
+	Action* nextAction = planner->planAction(worldModel, 2);
+ 	nextAction->executeAction(this);
 }
 
 void ABot::runAttackBehavior_Implementation(AUnit* target){

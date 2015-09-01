@@ -8,10 +8,13 @@ WorldModel::WorldModel(){
 
 }
 WorldModel::WorldModel(const WorldModel & copy){
-	this->charGoals = copy.charGoals;
-	this->applicableActions = copy.applicableActions;
-	//this->charResource = copy.charResource;
-	this->currentActionIndex = 0;
+	/*charGoals.Init(copy.charGoals.Num());
+	for (int i = 0; i < copy.charGoals.Num(); i++){
+		charGoals
+	}*/
+	charGoals = copy.charGoals;
+	applicableActions = copy.applicableActions;
+	currentActionIndex = 0;
 }
 WorldModel::WorldModel(TArray<Goal*> charGoals)// , FResource charResource)
 {

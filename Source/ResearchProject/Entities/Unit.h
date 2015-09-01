@@ -39,6 +39,14 @@ public:
 	
 	TArray<Action*> getExposedActions() { return exposedActions; };
 
+	UFUNCTION(BlueprintCallable, Category = Unit_Progression)
+		int32 getGoldWorth() { return progression->getGoldKillWorth(); };
+	UFUNCTION(BlueprintCallable, Category = Unit_Progression)
+		int32 getExpWorth(){ return progression->getExpKillWorth(); };
+
+	//UFUNCTION(BlueprintNativeEvent, Category = Unit_Executions)
+	//	void attackTarget(AUnit* target);
+
 	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
 	FProgression* progression;
 

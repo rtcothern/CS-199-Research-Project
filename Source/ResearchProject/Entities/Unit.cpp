@@ -39,3 +39,6 @@ float AUnit::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEve
 	return health;
 }
 
+//void AUnit::attackTarget_Implementation(AUnit* target){
+//
+//}
