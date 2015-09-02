@@ -1,0 +1,9 @@
+1. Switching gears to altered format of game
+2. Much time is spent on dynamic determination of effects of Actions on Goals and how this should be implemented in code.
+	2.a Initial implementation utilized inheritance, and required a new class for each Goal and Action. Determination of the effect an Action had on a Goal involved
+		a large amount of passing of control back and forth between a Goal and an Action, and changes to the interface required large changes across multiple classes
+
+		This was necessary initially as Goals and Actions needed specific pieces of information in order to evaluate each other.
+
+	2.b Secondary implementation involved enums to identify what type a Goal or Action is. This was deemed impossibled in version one because of the specific information requirement.
+		However, version 2 bypasses storing this specific information in the Goals or Actions, and will obtain this info directly from the Bots involved

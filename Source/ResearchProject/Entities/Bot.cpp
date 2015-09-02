@@ -3,8 +3,6 @@
 #include "ResearchProject.h"
 #include "../GOB/Action.h"
 #include "../GOB/ActionPlanner.h"
-#include "../GOB/Goal_Exp.h"
-#include "../GOB/Goal_Gold.h"
 #include "EngineUtils.h"
 #include "Bot.h"
 
@@ -23,9 +21,9 @@ void ABot::BeginPlay()
 {
 	progression = new FParagonProgression();
 
-	TArray<Goal*> goals;
-	Goal *g1 = new Goal_Exp(((FParagonProgression*)progression)->getExpForNextLevel());
-	Goal *g2 = new Goal_Gold(((FParagonProgression*)progression)->gold);
+	TArray<Goal> goals;
+	Goal g1 = Goal(Goal::Goal_Type::Exp, this);
+	Goal g2 = Goal(Goal::Goal_Type::Gold, this);
 	goals.Emplace(g1);
 	goals.Emplace(g2);
 
