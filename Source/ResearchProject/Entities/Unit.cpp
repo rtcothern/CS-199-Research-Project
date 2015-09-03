@@ -2,7 +2,6 @@
 
 #include "ResearchProject.h"
 #include "../GOB/Action.h"
-#include "../GOB/Action_Kill.h"
 #include "Unit.h"
 
 
@@ -21,7 +20,7 @@ AUnit::AUnit()
 // Called when the game starts or when spawned
 void AUnit::BeginPlay()
 {
-	Action_Kill *killAction = new Action_Kill(progression->getExpKillWorth(), progression->getGoldKillWorth(), this);
+	Action *killAction = new Action(Action::Action_Type::Kill, this);
 	exposedActions.Emplace(killAction);
 	Super::BeginPlay();
 }

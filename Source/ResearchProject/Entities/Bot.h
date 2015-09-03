@@ -18,12 +18,6 @@ public:
 	ABot();
 	~ABot();
 
-	/*UENUM(BlueprintType)
-	enum class EBehavior_Type : uint8
-	{
-		ATTACK 	UMETA(DisplayName = "team1"),
-	};*/
-
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

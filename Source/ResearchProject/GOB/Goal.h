@@ -1,34 +1,37 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Code copyright © Raymond Cothern, 2015
 
 #pragma once
 class Action;
+class AUnit;
 
 class RESEARCHPROJECT_API Goal
 {
 	
 public:	
+	enum class Goal_Type{
+		Gold,
+		Exp,
+		Live,
+		Defend
+	};
+
 	~Goal(){};
 	Goal();
-	//Goal(float startingInsistence, float changePerMinute);
+	Goal(Goal_Type type, AUnit *ownerUnit);
 
-	//Calculate the current discontentment contribution from this goal
+	Goal_Type goal_type;
+
 	virtual float getDC() const;
 
-	//Get the passive change per minute in this goal
 	float getPassiveChange() const { return changePerMinute; };
 
-	uint16 getId() const { return id; };
 	float getInsistence() const { return insistence; };
 
-	//Apply the specified action to this goal and observe its effect
 	virtual void applyAction(Action *action);
 
-	virtual void update(class AUnit* character) = 0;
-
 protected:
+	AUnit *owner;
 	const float maxInsistence = 10;
 	float insistence, changePerMinute;
-	uint16 id;
-	static uint16 highestId;
 	bool bEnabled;
 };

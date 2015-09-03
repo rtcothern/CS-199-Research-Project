@@ -54,6 +54,5 @@ public:
 
 protected:
 	TArray<Action*> exposedActions;
-	uint16 expWorth, goldWorth;
 	uint16 effectiveDPS;
 };

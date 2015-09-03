@@ -8,15 +8,11 @@ WorldModel::WorldModel(){
 
 }
 WorldModel::WorldModel(const WorldModel & copy){
-	/*charGoals.Init(copy.charGoals.Num());
-	for (int i = 0; i < copy.charGoals.Num(); i++){
-		charGoals
-	}*/
 	charGoals = copy.charGoals;
 	applicableActions = copy.applicableActions;
 	currentActionIndex = 0;
 }
-WorldModel::WorldModel(TArray<Goal*> charGoals)// , FResource charResource)
+WorldModel::WorldModel(TArray<Goal> charGoals)// , FResource charResource)
 {
 	this->charGoals = charGoals;
 }
@@ -28,7 +24,7 @@ WorldModel::~WorldModel()
 float WorldModel::calculateDC(){
 	float dc = 0;
 	for (auto g : charGoals){
-		dc += g->getDC();
+		dc += g.getDC();
 	}
 	return dc;
 }
@@ -49,7 +45,7 @@ Action* WorldModel::nextAction(){
 
 void WorldModel::applyAction(Action* action){
 	for (auto & g : charGoals){
-		g->applyAction(action);
+		g.applyAction(action);
 	}
 
 	//Manage the characters resource as a result of the action's cost and duration

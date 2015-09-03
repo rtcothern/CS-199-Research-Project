@@ -10,7 +10,7 @@ class RESEARCHPROJECT_API WorldModel
 {
 public:
 	WorldModel();
-	WorldModel(TArray<Goal*> charGoals);// , FResource charResource);
+	WorldModel(TArray<Goal> charGoals);// , FResource charResource);
 	WorldModel(const WorldModel & copy);
 	~WorldModel();
 
@@ -22,7 +22,7 @@ public:
 
 private:
 	TArray<Action*> applicableActions;
-	TArray<Goal*> charGoals;
+	TArray<Goal> charGoals;
 	uint8 currentActionIndex = 0;
 	//FResource charResource;
 };

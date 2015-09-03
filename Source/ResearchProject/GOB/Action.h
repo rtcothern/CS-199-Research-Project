@@ -1,33 +1,48 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Code copyright © Raymond Cothern, 2015
 
 #pragma once
 #include <unordered_map>
 
 class Goal;
+class AUnit;
 /**
  * 
  */
 class RESEARCHPROJECT_API Action
 {
 public:
+	enum class Action_Type{
+		Kill,
+		Evade,
+		Move_Toward
+	};
+
 	~Action();
-	Action();
+	Action(Action_Type type, AUnit *executeeUnit);
+
 	//Get the duration of the action in minutes
 	float getDuration() const;
 
+	Action_Type action_type;
+
 	uint16 getResourceCost();
 
-	virtual float getExpEffect(float expNeededForLevel) { return 0; };
-	virtual float getGoldEffect(float currentGold) { return 0; };
-	virtual float getLiveEffect(const Goal* goal) { return 0; };
-	virtual float getPushEffect(const Goal* goal) { return 0; };
+	float getExpEffect(AUnit * const executor);
+	float getGoldEffect(AUnit * const executor);
+	float getLiveEffect(AUnit * const executor);
+	float getDefendEffect(AUnit * const executor);
 
-	virtual void executeAction(class ABot *executor) = 0;
+	void executeAction(class ABot *executor);
 
 protected:
 	Action(float duration);
 	Action(float duration, uint16 resourceCost);
 	
+	AUnit *executee;
+
 	float duration;
 	uint16 resourceCost;
+
+	const float maxInsistEffect = 2;
+	const float maxGoldGain = 15;
 };
