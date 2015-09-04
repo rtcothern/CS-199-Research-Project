@@ -34,6 +34,8 @@ public:
 	float attackRange;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
 	ETeam_Enum team;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
+	float distanceToEnd;
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
 	

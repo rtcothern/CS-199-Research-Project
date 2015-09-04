@@ -11,6 +11,8 @@ Goal::Goal(Goal_Type type, AUnit *ownerUnit)
 {
 	goal_type = type;
 	owner = ownerUnit;
+	insistence = 0;
+	changePerMinute = 0;
 }
 float Goal::getDC() const{
 	return insistence*insistence;

@@ -36,4 +36,5 @@ public:
 protected:
 	class ActionPlanner* planner;
 	WorldModel worldModel;
+	FParagonProgression *progessionPara = (FParagonProgression*)progression;
 };

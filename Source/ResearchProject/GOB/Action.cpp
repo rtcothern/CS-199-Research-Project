@@ -41,8 +41,8 @@ float Action::getExpEffect(AUnit * const executor){
 		case Action_Type::Kill:
 		{
 			FParagonProgression *progression = (FParagonProgression*)executor->progression;
-			float ratio = executee->getExpWorth() / progression->getExpForNextLevel();
-			result = ratio * maxInsistEffect;
+			float ratio = executee->getExpWorth() / progression->getRemainingExp();
+			result = (ratio <=  1) ? ratio * maxInsistEffect : maxInsistEffect;
 			break;
 		}
 		case Action_Type::Evade:
@@ -86,8 +86,11 @@ float Action::getLiveEffect(AUnit * const executor){
 		case Action_Type::Kill:
 		{
 			FParagonProgression *progExecutor = (FParagonProgression*)executor->progression;
-			FParagonProgression *progExecutee = (FParagonProgression*)executor->progression;
-			float ratio = progExecutor->level / progExecutee->level;
+			//FParagonProgression *progExecutee = (FParagonProgression*)executor->progression;
+			//Temporary fix, this will work because of the values for exp for units and endzones, but should be fixed in the progression patch
+			//Some sort of THREAT indicator interface would be a good idea here
+			//!!!!!!!!!!!!!!!!! TODO !!!!!!!!!!!!!!!!!!!!!!!!!
+			float ratio = progExecutor->level / executee->getExpWorth(); //progExecutee->level;
 			result = -ratio * maxInsistEffect;
 			break; 
 		}

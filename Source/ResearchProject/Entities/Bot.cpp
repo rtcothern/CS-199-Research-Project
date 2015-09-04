@@ -20,6 +20,7 @@ ABot::~ABot(){
 void ABot::BeginPlay()
 {
 	progression = new FParagonProgression();
+	progessionPara = (FParagonProgression*)progression;
 
 	TArray<Goal> goals;
 	Goal g1 = Goal(Goal::Goal_Type::Exp, this);
@@ -37,6 +38,7 @@ void ABot::BeginPlay()
 // Called every frame
 void ABot::Tick( float DeltaTime )
 {
+	progessionPara->distanceToEnd = this->distanceToEnd;
 	Super::Tick( DeltaTime );
 }
 
