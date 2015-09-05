@@ -28,9 +28,7 @@ void AUnit::BeginPlay()
 // Called every frame
 void AUnit::Tick(float DeltaTime)
 {
-	progression->Tick(DeltaTime);
 	Super::Tick( DeltaTime );
-
 }
 
 float AUnit::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser){
@@ -38,6 +36,10 @@ float AUnit::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEve
 	return health;
 }
 
-//void AUnit::attackTarget_Implementation(AUnit* target){
+//int32 AUnit::getGoldWorth(){
 //
 //}
+//int32 AUnit::getExpWorth(){
+//
+//}
+

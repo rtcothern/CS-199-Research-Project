@@ -35,6 +35,5 @@ AResearchProjectCharacter::AResearchProjectCharacter()
 }
 
 void AResearchProjectCharacter::BeginPlay(){
-	progression = new FParagonProgression();
 	Super::BeginPlay();
 }

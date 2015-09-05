@@ -5,12 +5,15 @@
 #include "../GOB/ActionPlanner.h"
 #include "EngineUtils.h"
 #include "Bot.h"
+#include "EndZone.h"
 
 
 // Sets default values
 ABot::ABot() : AUnit()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	exp = 0;
+	level = 1;
 }
 ABot::~ABot(){
 	delete planner;
@@ -19,8 +22,8 @@ ABot::~ABot(){
 // Called when the game starts or when spawned
 void ABot::BeginPlay()
 {
-	progression = new FParagonProgression();
-	progessionPara = (FParagonProgression*)progression;
+	exp = 0;
+	level = 1;
 
 	TArray<Goal> goals;
 	Goal g1 = Goal(Goal::Goal_Type::Exp, this);
@@ -38,21 +41,20 @@ void ABot::BeginPlay()
 // Called every frame
 void ABot::Tick( float DeltaTime )
 {
-	progessionPara->distanceToEnd = this->distanceToEnd;
+	if (exp >= level){
+		exp -= level++;
+	}
 	Super::Tick( DeltaTime );
 }
-
-//// Called to bind functionality to input
-//void ABot::SetupPlayerInputComponent(class UInputComponent* InputComponent)
-//{
-//	Super::SetupPlayerInputComponent(InputComponent);
-//
-//}
 
 void ABot::executeNextAction(){
 	TArray<Action*> possibleActions;
 	for (TActorIterator<AUnit> unitItr(GetWorld()); unitItr; ++unitItr){
-		if (unitItr->GetUniqueID() != this->GetUniqueID())
+		if (unitItr->team != this->team && unitItr->GetUniqueID() != this->GetUniqueID())
+			possibleActions.Append(unitItr->getExposedActions());
+	}
+	for (TActorIterator<AEndZone> unitItr(GetWorld()); unitItr; ++unitItr){
+		if (unitItr->team != this->team && unitItr->GetUniqueID() != this->GetUniqueID())
 			possibleActions.Append(unitItr->getExposedActions());
 	}
 	worldModel.setActions(possibleActions);
@@ -60,6 +62,21 @@ void ABot::executeNextAction(){
  	nextAction->executeAction(this);
 }
 
-void ABot::runAttackBehavior_Implementation(AUnit* target){
+uint16 ABot::getExpForNextLevel(){
+	return level;
+}
+uint16 ABot::getRemainingExp(){
+	return getExpForNextLevel() - exp;
+}
+uint16 ABot::getExpWorth(){
+	return getExpForNextLevel();
+}
+uint16 ABot::getGoldWorth(){
+	return baseGoldWorth + ((fieldWidth-distanceToEnd) / zoneWidth - 0.5);
+}
 
+void ABot::runAttackBehavior_Implementation(AUnit* target){
+	//Blank intentionally
+}
+void ABot::runMoveTowardBehavior_Implementation(AEndZone* moveTarget){
 }

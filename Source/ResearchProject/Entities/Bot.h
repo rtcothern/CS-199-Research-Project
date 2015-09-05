@@ -28,13 +28,32 @@ public:
 	//virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
 	UFUNCTION(BlueprintCallable, Category = Unit_Actions)
-	void executeNextAction();
+		void executeNextAction();
 
 	UFUNCTION(BlueprintNativeEvent, Category = Unit_Behavior)
-	void runAttackBehavior(AUnit* target);
+		void runAttackBehavior(AUnit* target);
+	UFUNCTION(BlueprintNativeEvent, Category = Unit_Behavior)
+		void runMoveTowardBehavior(AEndZone* moveTarget);
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
+	float distanceToEnd;
+
+	uint16 exp;
+	uint8 level;
+
+	const uint16 baseGoldWorth = 5;
+	const float numZones = 8;
+	const float fieldWidth = 4000;
+	const float zoneWidth = fieldWidth / numZones;
+
+	uint16 getRemainingExp();
+	uint16 getExpForNextLevel();
+
+	//Overridden functions
+	uint16 getExpWorth() override;
+	uint16 getGoldWorth() override;
 
 protected:
 	class ActionPlanner* planner;
 	WorldModel worldModel;
-	FParagonProgression *progessionPara = (FParagonProgression*)progression;
 };

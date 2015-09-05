@@ -1,10 +1,11 @@
 // Code copyright © Raymond Cothern, 2015
 
 #pragma once
-#include <unordered_map>
 
 class Goal;
-class AUnit;
+class GobObject;
+class ABot;
+
 /**
  * 
  */
@@ -18,7 +19,7 @@ public:
 	};
 
 	~Action();
-	Action(Action_Type type, AUnit *executeeUnit);
+	Action(Action_Type type, GobObject *executeeObject);
 
 	//Get the duration of the action in minutes
 	float getDuration() const;
@@ -27,10 +28,10 @@ public:
 
 	uint16 getResourceCost();
 
-	float getExpEffect(AUnit * const executor);
-	float getGoldEffect(AUnit * const executor);
-	float getLiveEffect(AUnit * const executor);
-	float getDefendEffect(AUnit * const executor);
+	float getExpEffect(ABot * const executor);
+	float getGoldEffect(ABot * const executor);
+	float getLiveEffect(ABot * const executor);
+	float getDefendEffect(ABot * const executor);
 
 	void executeAction(class ABot *executor);
 
@@ -38,7 +39,7 @@ protected:
 	Action(float duration);
 	Action(float duration, uint16 resourceCost);
 	
-	AUnit *executee;
+	GobObject *executee;
 
 	float duration;
 	uint16 resourceCost;

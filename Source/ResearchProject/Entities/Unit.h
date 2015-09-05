@@ -3,19 +3,19 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "UnitProperties.h"
 #include "../GOB/Action.h"
+#include "../GOB/GobObject.h"
 #include "Unit.generated.h"
 
 UCLASS()
-class RESEARCHPROJECT_API AUnit : public ACharacter
+class RESEARCHPROJECT_API AUnit : public ACharacter, public GobObject
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
 	AUnit();
-	virtual ~AUnit() { delete progression; };
+	virtual ~AUnit() {};
 	// Called when the game starts or when Actionwned
 	virtual void BeginPlay() override;
 	
@@ -32,29 +32,13 @@ public:
 	float attackSpeed;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
 	float attackRange;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit_Stats)
 	ETeam_Enum team;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
-	float distanceToEnd;
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
 	
-	TArray<Action*> getExposedActions() { return exposedActions; };
-
 	UFUNCTION(BlueprintCallable, Category = Unit_Progression)
-		int32 getGoldWorth() { return progression->getGoldKillWorth(); };
+	int32 getGoldKillWorthBP(){ return (int32)getGoldWorth(); };
 	UFUNCTION(BlueprintCallable, Category = Unit_Progression)
-		int32 getExpWorth(){ return progression->getExpKillWorth(); };
-
-	//UFUNCTION(BlueprintNativeEvent, Category = Unit_Executions)
-	//	void attackTarget(AUnit* target);
-
-	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
-	FProgression* progression;
-
-	
-
-protected:
-	TArray<Action*> exposedActions;
-	uint16 effectiveDPS;
+	int32 getExpKillWorthBP(){ return (int32)getExpWorth(); };
 };

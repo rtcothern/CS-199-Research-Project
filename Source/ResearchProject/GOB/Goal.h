@@ -2,7 +2,7 @@
 
 #pragma once
 class Action;
-class AUnit;
+class ABot;
 
 class RESEARCHPROJECT_API Goal
 {
@@ -17,7 +17,7 @@ public:
 
 	~Goal(){};
 	Goal();
-	Goal(Goal_Type type, AUnit *ownerUnit);
+	Goal(Goal_Type type, ABot *ownerBot);
 
 	Goal_Type goal_type;
 
@@ -30,7 +30,7 @@ public:
 	virtual void applyAction(Action *action);
 
 protected:
-	AUnit *owner;
+	ABot *owner;
 	const float maxInsistence = 10;
 	float insistence, changePerMinute;
 	bool bEnabled;

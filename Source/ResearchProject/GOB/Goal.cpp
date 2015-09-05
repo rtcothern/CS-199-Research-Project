@@ -3,14 +3,15 @@
 #include "ResearchProject.h"
 #include "Action.h"
 #include "Goal.h"
+#include "Entities/Bot.h"
 
 Goal::Goal()
 {
 }
-Goal::Goal(Goal_Type type, AUnit *ownerUnit)
+Goal::Goal(Goal_Type type, ABot *ownerBot)
 {
 	goal_type = type;
-	owner = ownerUnit;
+	owner = ownerBot;
 	insistence = 0;
 	changePerMinute = 0;
 }

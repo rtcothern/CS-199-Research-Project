@@ -5,7 +5,7 @@
 #include "ResearchProjectCharacter.generated.h"
 
 UCLASS(Blueprintable)
-class AResearchProjectCharacter : public AUnit
+class AResearchProjectCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
