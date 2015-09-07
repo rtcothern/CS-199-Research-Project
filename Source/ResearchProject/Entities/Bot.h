@@ -35,16 +35,32 @@ public:
 	UFUNCTION(BlueprintNativeEvent, Category = Unit_Behavior)
 		void runMoveTowardBehavior(AEndZone* moveTarget);
 
+	UFUNCTION(BlueprintCallable, Category = Unit_Scoring)
+		void scoreKill(ABot* victim);
+	UFUNCTION(BlueprintCallable, Category = Unit_Scoring)
+		void scoreEndZone(AEndZone* enemyEndZone);
+
+	UFUNCTION(BlueprintCallable, Category = Unit_Management)
+		void Die();
+	UFUNCTION(BlueprintCallable, Category = Unit_Management)
+		void Respawn();
+	UFUNCTION(BlueprintCallable, Category = Unit_Management)
+		float getExpInsist();
+	UFUNCTION(BlueprintCallable, Category = Unit_Management)
+		float getGoldInsist();
+
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
 	float distanceToEnd;
 
 	uint16 exp;
 	uint8 level;
 
-	const uint16 baseGoldWorth = 5;
+	const uint16 baseGoldWorth = 3;
 	const float numZones = 8;
 	const float fieldWidth = 4000;
 	const float zoneWidth = fieldWidth / numZones;
+	const float aggroRange = 1000;
 
 	uint16 getRemainingExp();
 	uint16 getExpForNextLevel();
@@ -56,4 +72,7 @@ public:
 protected:
 	class ActionPlanner* planner;
 	WorldModel worldModel;
+
+private:
+	float apTimer, apFrequency;
 };

@@ -22,18 +22,22 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Properties)
 	int32 health;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Properties)
 	float speed;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Properties)
 	int32 attackDamage;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Properties)
 	float attackSpeed;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Properties)
 	float attackRange;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit_Stats)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit_Properties)
 	ETeam_Enum team;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit_Properties)
+	bool alive;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit_Properties)
+	class AEndZone* friendlyEndZone;
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
 	
@@ -41,4 +45,6 @@ public:
 	int32 getGoldKillWorthBP(){ return (int32)getGoldWorth(); };
 	UFUNCTION(BlueprintCallable, Category = Unit_Progression)
 	int32 getExpKillWorthBP(){ return (int32)getExpWorth(); };
+
+	
 };

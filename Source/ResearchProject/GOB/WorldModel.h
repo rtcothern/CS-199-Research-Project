@@ -20,6 +20,8 @@ public:
 	void setActions(TArray<Action*> actions);
 	void updateGoals(class Unit *character);
 
+	TArray<Goal> getCharGoals(){ return charGoals; };
+
 private:
 	TArray<Action*> applicableActions;
 	TArray<Goal> charGoals;

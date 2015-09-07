@@ -12,11 +12,27 @@ Goal::Goal(Goal_Type type, ABot *ownerBot)
 {
 	goal_type = type;
 	owner = ownerBot;
-	insistence = 0;
+	insistence = 5;
 	changePerMinute = 0;
 }
 float Goal::getDC() const{
-	return insistence*insistence;
+	float result = 0;
+	switch (goal_type)
+	{
+	case Goal_Type::Gold:
+		result = insistence*insistence*insistence;
+		break;
+	case Goal_Type::Exp:
+		result = insistence*insistence;
+		break;
+	case Goal_Type::Live:
+		result = insistence*insistence*insistence;
+		break;
+	case Goal_Type::Defend:
+		result = 1.5*insistence*insistence;
+		break;
+	}
+	return result; 
 }
 
 
@@ -42,6 +58,8 @@ void Goal::applyAction(Action * action){
 	}
 
 	float passiveChange = changePerMinute * action->getDuration();
+
+	insistence -= directChange;
 	insistence += passiveChange;
 	if (insistence > maxInsistence){
 		insistence = maxInsistence;

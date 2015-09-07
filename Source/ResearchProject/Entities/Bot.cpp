@@ -14,6 +14,7 @@ ABot::ABot() : AUnit()
 	PrimaryActorTick.bCanEverTick = true;
 	exp = 0;
 	level = 1;
+	apFrequency = 1;
 }
 ABot::~ABot(){
 	delete planner;
@@ -35,6 +36,8 @@ void ABot::BeginPlay()
 
 	planner = new ActionPlanner();
 
+	apTimer = 0;
+
 	Super::BeginPlay();
 }
 
@@ -44,13 +47,22 @@ void ABot::Tick( float DeltaTime )
 	if (exp >= level){
 		exp -= level++;
 	}
+	if (apTimer >= apFrequency){
+		//apTimer -= apFrequency;
+		apTimer = 0;
+		executeNextAction();
+	}
+	else{
+		apTimer += DeltaTime;
+	}
 	Super::Tick( DeltaTime );
 }
 
 void ABot::executeNextAction(){
 	TArray<Action*> possibleActions;
 	for (TActorIterator<AUnit> unitItr(GetWorld()); unitItr; ++unitItr){
-		if (unitItr->team != this->team && unitItr->GetUniqueID() != this->GetUniqueID())
+		if (unitItr->team != this->team && unitItr->GetUniqueID() != this->GetUniqueID()
+			&& unitItr->GetHorizontalDistanceTo(this) <= aggroRange)
 			possibleActions.Append(unitItr->getExposedActions());
 	}
 	for (TActorIterator<AEndZone> unitItr(GetWorld()); unitItr; ++unitItr){
@@ -79,4 +91,35 @@ void ABot::runAttackBehavior_Implementation(AUnit* target){
 	//Blank intentionally
 }
 void ABot::runMoveTowardBehavior_Implementation(AEndZone* moveTarget){
+}
+
+void ABot::scoreKill(ABot* victim){
+	victim->Die();
+}
+void ABot::scoreEndZone(AEndZone* enemyEndZone){
+	if (enemyEndZone && friendlyEndZone){
+		worldModel.applyAction(enemyEndZone->getExposedActions()[0]);
+		Respawn();
+	}
+}
+void ABot::Die(){
+	alive = false;
+}
+void ABot::Respawn(){
+	this->SetActorLocation(friendlyEndZone->GetActorLocation());
+}
+
+float ABot::getExpInsist(){
+	for (auto g : worldModel.getCharGoals()){
+		if (g.goal_type == Goal::Goal_Type::Exp)
+			return g.getInsistence();
+	}
+	return 0;
+}
+float ABot::getGoldInsist(){
+	for (auto g : worldModel.getCharGoals()){
+		if (g.goal_type == Goal::Goal_Type::Gold)
+			return g.getInsistence();
+	}
+	return 0;
 }

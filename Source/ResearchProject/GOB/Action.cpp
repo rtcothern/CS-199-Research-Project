@@ -52,7 +52,9 @@ float Action::getExpEffect(ABot * const executor){
 		}
 		case Action_Type::Move_Toward:
 		{
-			//TODO
+			float ratio = executee->getExpWorth() / executor->getRemainingExp();
+			result = (ratio <= 1) ? ratio * maxInsistEffect : maxInsistEffect;
+			result *= (1 - executor->distanceToEnd / executor->fieldWidth);
 			break;
 		}
 	}
@@ -75,7 +77,7 @@ float Action::getGoldEffect(ABot * const executor){
 		case Action_Type::Move_Toward:
 		{
 			float ratio = executee->getGoldWorth() / maxGoldGain;
-			result = ratio * (executor->distanceToEnd / executor->fieldWidth) * maxInsistEffect;
+			result = ratio * (1 - executor->distanceToEnd / executor->fieldWidth) * maxInsistEffect;
 			break;
 		}
 	}

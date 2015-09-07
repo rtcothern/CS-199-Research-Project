@@ -36,10 +36,3 @@ float AUnit::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEve
 	return health;
 }
 
-//int32 AUnit::getGoldWorth(){
-//
-//}
-//int32 AUnit::getExpWorth(){
-//
-//}
-
