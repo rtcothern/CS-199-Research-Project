@@ -68,3 +68,20 @@ void Goal::applyAction(Action * action){
 		insistence = 0;
 	}
 }
+
+void Goal::update(float deltaTime){
+	switch (goal_type)
+	{
+	case Goal_Type::Gold:
+		//changePerMinute = enemyTeamGold / teamGold * (teamGold / maxGold + 1);
+		break;
+	case Goal_Type::Exp:
+		//changePerMinute = avgLevel / level;
+		break;
+	case Goal_Type::Live:
+		break;
+	case Goal_Type::Defend:
+		break;
+	}
+	insistence = changePerMinute * deltaTime / 60;
+}

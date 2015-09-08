@@ -104,6 +104,7 @@ void ABot::scoreEndZone(AEndZone* enemyEndZone){
 }
 void ABot::Die(){
 	alive = false;
+	Respawn();
 }
 void ABot::Respawn(){
 	this->SetActorLocation(friendlyEndZone->GetActorLocation());

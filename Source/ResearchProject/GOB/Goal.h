@@ -29,6 +29,8 @@ public:
 
 	virtual void applyAction(Action *action);
 
+	void update(float deltaTime);
+
 protected:
 	ABot *owner;
 	const float maxInsistence = 10;
