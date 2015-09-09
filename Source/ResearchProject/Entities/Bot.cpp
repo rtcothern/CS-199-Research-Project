@@ -50,6 +50,7 @@ void ABot::Tick( float DeltaTime )
 	if (apTimer >= apFrequency){
 		//apTimer -= apFrequency;
 		apTimer = 0;
+		distanceToEnd = distanceToEnd > fieldWidth ? fieldWidth : distanceToEnd;
 		executeNextAction();
 	}
 	else{
@@ -69,9 +70,12 @@ void ABot::executeNextAction(){
 		if (unitItr->team != this->team && unitItr->GetUniqueID() != this->GetUniqueID())
 			possibleActions.Append(unitItr->getExposedActions());
 	}
-	worldModel.setActions(possibleActions);
-	Action* nextAction = planner->planAction(worldModel, 2);
- 	nextAction->executeAction(this);
+	if (possibleActions.Num() > 0){
+		worldModel.setActions(possibleActions);
+		Action* nextAction = planner->planAction(worldModel, 2);
+		if (nextAction)
+			nextAction->executeAction(this);
+	} 
 }
 
 uint16 ABot::getExpForNextLevel(){

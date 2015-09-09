@@ -3,7 +3,7 @@
 #include "ResearchProject.h"
 #include "Bot_Con.h"
 
-ABot_Con::ABot_Con(){
-
+ABot_Con::ABot_Con() : Super(){
+	bWantsPlayerState = true;
 }
 

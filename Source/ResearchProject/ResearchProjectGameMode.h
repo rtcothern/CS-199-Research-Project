@@ -10,6 +10,16 @@ class AResearchProjectGameMode : public AGameMode
 
 public:
 	AResearchProjectGameMode();
+
+	/** Current gold of Team 1. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Game_Attributes)
+		int32 Team_1_Gold;
+	/** Current gold of Team 2. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Game_Attributes)
+		int32 Team_2_Gold;
+	/** The amount of gold a team needs to win */
+	UPROPERTY(BlueprintReadOnly, Category = Game_Attributes)
+		int32 Gold_To_Win;
 };
 
 

@@ -16,4 +16,12 @@ AResearchProjectGameMode::AResearchProjectGameMode()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
+
+	Team_1_Gold = 0;
+	Team_2_Gold = 0;
+	Gold_To_Win = 200;
+	NumPlayers = 0;
+	NumBots = 6;
+	MinRespawnDelay = 2;
+	NumSpectators = 1;
 }
