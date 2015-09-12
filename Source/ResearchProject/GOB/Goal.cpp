@@ -4,6 +4,7 @@
 #include "Action.h"
 #include "Goal.h"
 #include "Entities/Bot.h"
+#include "../ResearchProjectGameMode.h"
 
 Goal::Goal()
 {
@@ -70,18 +71,34 @@ void Goal::applyAction(Action * action){
 }
 
 void Goal::update(float deltaTime){
+	AResearchProjectGameMode *gameMode = (AResearchProjectGameMode*)owner->GetWorld()->GetAuthGameMode();
 	switch (goal_type)
 	{
-	case Goal_Type::Gold:
-		//changePerMinute = enemyTeamGold / teamGold * (teamGold / maxGold + 1);
+	case Goal_Type::Gold:{
+		float teamGold = 0, enemyTeamGold = 0;
+		switch (owner->team){
+		case ETeam_Enum::team1:
+			teamGold = gameMode->Team_1_Gold;
+			enemyTeamGold = gameMode->Team_2_Gold;
+			break;
+		case ETeam_Enum::team2:
+			teamGold = gameMode->Team_2_Gold;
+			enemyTeamGold = gameMode->Team_1_Gold;
+			break;
+		}
+		float maxGold = gameMode->Gold_To_Win;
+		teamGold = teamGold == 0 ? 1 : teamGold; //Only relevant when team gold is 0 to avoid div by 0 error
+		changePerMinute = enemyTeamGold / teamGold * (teamGold / maxGold + 1);
 		break;
-	case Goal_Type::Exp:
-		//changePerMinute = avgLevel / level;
+	}
+	case Goal_Type::Exp:{
+		changePerMinute = gameMode->avgLevel / owner->level;
 		break;
+	}
 	case Goal_Type::Live:
 		break;
 	case Goal_Type::Defend:
 		break;
 	}
-	insistence = changePerMinute * deltaTime / 60;
+	insistence += changePerMinute * deltaTime / 60;
 }

@@ -44,9 +44,6 @@ void ABot::BeginPlay()
 // Called every frame
 void ABot::Tick( float DeltaTime )
 {
-	if (exp >= level){
-		exp -= level++;
-	}
 	if (apTimer >= apFrequency){
 		//apTimer -= apFrequency;
 		apTimer = 0;
@@ -56,6 +53,7 @@ void ABot::Tick( float DeltaTime )
 	else{
 		apTimer += DeltaTime;
 	}
+	worldModel.updateGoals(DeltaTime);
 	Super::Tick( DeltaTime );
 }
 
@@ -78,6 +76,20 @@ void ABot::executeNextAction(){
 	} 
 }
 
+void ABot::acquireExp(uint8 exp){
+	uint32 toAdd = exp;
+	while (toAdd > 0){
+		if ((int32)(exp + toAdd) >= level){
+			toAdd -= level;
+			level++;
+		}
+		else{
+			exp += toAdd;
+			toAdd = 0;
+		}
+	}
+}
+
 uint16 ABot::getExpForNextLevel(){
 	return level;
 }
@@ -98,11 +110,15 @@ void ABot::runMoveTowardBehavior_Implementation(AEndZone* moveTarget){
 }
 
 void ABot::scoreKill(ABot* victim){
+	goldEarned += victim->getGoldWorth();
+	acquireExp(victim->getExpWorth());
 	victim->Die();
 }
 void ABot::scoreEndZone(AEndZone* enemyEndZone){
 	if (enemyEndZone && friendlyEndZone){
 		worldModel.applyAction(enemyEndZone->getExposedActions()[0]);
+		goldEarned += enemyEndZone->getGoldWorth();
+		acquireExp(enemyEndZone->getExpWorth());
 		Respawn();
 	}
 }

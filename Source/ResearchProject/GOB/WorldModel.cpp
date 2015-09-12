@@ -59,8 +59,8 @@ void WorldModel::setActions(TArray<Action*> actions){
 	applicableActions = actions;
 }
 
-void WorldModel::updateGoals(Unit *character){
-	for (auto g : charGoals){
-
+void WorldModel::updateGoals(float deltaTime){
+	for (auto & g : charGoals){
+		g.update(deltaTime);
 	}
 }

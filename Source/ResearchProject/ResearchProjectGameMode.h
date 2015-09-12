@@ -20,6 +20,11 @@ public:
 	/** The amount of gold a team needs to win */
 	UPROPERTY(BlueprintReadOnly, Category = Game_Attributes)
 		int32 Gold_To_Win;
+	UPROPERTY(BlueprintReadOnly, Category = Game_Attributes)
+		int32 avgLevel;
+
+	UFUNCTION(BlueprintCallable, Category = Game_Attributes)
+		void updateGameAttributes(int32 t1g, int32 t2g, int32 avgLvl);
 };
 
 

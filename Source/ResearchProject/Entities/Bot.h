@@ -53,14 +53,20 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
 	float distanceToEnd;
 
-	uint16 exp;
-	uint8 level;
+	UPROPERTY(BlueprintReadOnly, Category = Unit_Stats)
+		int32 exp;
+	UPROPERTY(BlueprintReadOnly, Category = Unit_Stats)
+		int32 level;
+	UPROPERTY(BlueprintReadOnly, Category = Unit_Stats)
+		int32 goldEarned;
 
 	const uint16 baseGoldWorth = 3;
 	const float numZones = 8;
 	const float fieldWidth = 4000;
 	const float zoneWidth = fieldWidth / numZones;
 	const float aggroRange = 1000;
+
+	void acquireExp(uint8 exp);
 
 	uint16 getRemainingExp();
 	uint16 getExpForNextLevel();

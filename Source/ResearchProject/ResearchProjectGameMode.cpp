@@ -25,3 +25,8 @@ AResearchProjectGameMode::AResearchProjectGameMode()
 	MinRespawnDelay = 2;
 	NumSpectators = 1;
 }
+void AResearchProjectGameMode::updateGameAttributes(int32 t1g, int32 t2g, int32 avgLvl){
+	Team_1_Gold = t1g;
+	Team_2_Gold = t2g;
+	avgLevel = avgLvl;
+}
