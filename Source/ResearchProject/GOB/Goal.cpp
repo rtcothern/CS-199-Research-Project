@@ -27,10 +27,10 @@ float Goal::getDC() const{
 		result = insistence*insistence;
 		break;
 	case Goal_Type::Live:
-		result = insistence*insistence*insistence;
+		result = insistence*insistence;
 		break;
 	case Goal_Type::Defend:
-		result = 2.5*insistence*insistence;
+		result = 1.5*insistence*insistence;
 		break;
 	}
 	return result; 
@@ -105,4 +105,5 @@ void Goal::update(float deltaTime){
 		}
 	}
 	insistence += changePerMinute * deltaTime / 60;
+	insistence = insistence > maxInsistence ? maxInsistence : insistence;
 }

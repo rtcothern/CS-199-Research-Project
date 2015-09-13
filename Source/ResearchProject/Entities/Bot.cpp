@@ -6,6 +6,7 @@
 #include "EngineUtils.h"
 #include "Bot.h"
 #include "EndZone.h"
+#include "DefensePoint.h"
 
 
 // Sets default values
@@ -72,6 +73,10 @@ void ABot::executeNextAction(){
 		if (unitItr->team != this->team && unitItr->GetUniqueID() != this->GetUniqueID())
 			possibleActions.Append(unitItr->getExposedActions());
 	}
+	for (TActorIterator<ADefensePoint> unitItr(GetWorld()); unitItr; ++unitItr){
+		if (unitItr->team == this->team && unitItr->GetUniqueID() != this->GetUniqueID())
+			possibleActions.Append(unitItr->getExposedActions());
+	}
 	if (possibleActions.Num() > 0){
 		worldModel.setActions(possibleActions);
 		Action* nextAction = planner->planAction(worldModel, 2);
@@ -114,19 +119,30 @@ void ABot::runAttackBehavior_Implementation(AUnit* target){
 void ABot::runMoveTowardBehavior_Implementation(AEndZone* moveTarget){
 	//Blank intentionally
 }
+void ABot::runDefendAreaBehavior_Implementation(ADefensePoint* dPoint){
+
+}
+
 
 void ABot::scoreKill(ABot* victim){
-	goldEarned += victim->getGoldWorth();
-	acquireExp(victim->getExpWorth());
+	for (auto a : victim->getExposedActions()){
+		if (a->action_type == Action::Action_Type::Kill){
+			Score(a, victim->getGoldWorth(), victim->getExpWorth());
+			break;
+		}
+	}
 	victim->Die();
 }
 void ABot::scoreEndZone(AEndZone* enemyEndZone){
 	if (enemyEndZone && friendlyEndZone){
-		worldModel.applyAction(enemyEndZone->getExposedActions()[0]);
-		goldEarned += enemyEndZone->getGoldWorth();
-		acquireExp(enemyEndZone->getExpWorth());
+		Score(enemyEndZone->getExposedActions()[0], enemyEndZone->getGoldWorth(), enemyEndZone->getExpWorth());
 		Respawn();
 	}
+}
+void ABot::Score(Action* scoringAction, uint16 goldWorth, uint16 expWorth){
+	worldModel.applyAction(scoringAction);
+	goldEarned += goldWorth;
+	acquireExp(expWorth);
 }
 void ABot::Die(){
 	alive = false;
@@ -146,6 +162,20 @@ float ABot::getExpInsist(){
 float ABot::getGoldInsist(){
 	for (auto g : worldModel.getCharGoals()){
 		if (g.goal_type == Goal::Goal_Type::Gold)
+			return g.getInsistence();
+	}
+	return 0;
+}
+float ABot::getLiveInsist(){
+	for (auto g : worldModel.getCharGoals()){
+		if (g.goal_type == Goal::Goal_Type::Live)
+			return g.getInsistence();
+	}
+	return 0;
+}
+float ABot::getDefendInsist(){
+	for (auto g : worldModel.getCharGoals()){
+		if (g.goal_type == Goal::Goal_Type::Defend)
 			return g.getInsistence();
 	}
 	return 0;

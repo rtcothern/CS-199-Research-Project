@@ -34,11 +34,14 @@ public:
 		void runAttackBehavior(AUnit* target);
 	UFUNCTION(BlueprintNativeEvent, Category = Unit_Behavior)
 		void runMoveTowardBehavior(AEndZone* moveTarget);
+	UFUNCTION(BlueprintNativeEvent, Category = Unit_Behavior)
+		void runDefendAreaBehavior(class ADefensePoint* dPoint);
 
 	UFUNCTION(BlueprintCallable, Category = Unit_Scoring)
 		void scoreKill(ABot* victim);
 	UFUNCTION(BlueprintCallable, Category = Unit_Scoring)
 		void scoreEndZone(AEndZone* enemyEndZone);
+	
 
 	UFUNCTION(BlueprintCallable, Category = Unit_Management)
 		void Die();
@@ -48,7 +51,10 @@ public:
 		float getExpInsist();
 	UFUNCTION(BlueprintCallable, Category = Unit_Management)
 		float getGoldInsist();
-
+	UFUNCTION(BlueprintCallable, Category = Unit_Management)
+		float getLiveInsist();
+	UFUNCTION(BlueprintCallable, Category = Unit_Management)
+		float getDefendInsist();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Unit_Stats)
 	float distanceToEnd;
@@ -80,5 +86,6 @@ protected:
 	WorldModel worldModel;
 
 private:
+	void Score(Action* scoringAction, uint16 goldWorth, uint16 expWorth);
 	float apTimer, apFrequency;
 };

@@ -5,6 +5,7 @@
 #include "Action.h"
 #include "../Entities/Bot.h"
 #include "../Entities/EndZone.h"
+#include "../Entities/DefensePoint.h"
 #include "../ResearchProjectGameMode.h"
 
 Action::Action(float duration){
@@ -48,7 +49,11 @@ float Action::getExpEffect(ABot * const executor){
 		}
 		case Action_Type::Evade:
 		{
-			//TODO
+			//float ratio = executee->getExpWorth() / (1.25 * executor->level); //progExecutee->level;
+			//ratio = ratio > 1 ? 1 : ratio;
+			//result = -ratio * maxInsistEffect;
+
+			//No Effect on EXP
 			break;
 		}
 		case Action_Type::Move_Toward:
@@ -60,7 +65,7 @@ float Action::getExpEffect(ABot * const executor){
 		}
 		case Action_Type::Defend_Area:
 		{
-			
+			//No Effect on EXP
 		}
 	}
 	return result;
@@ -76,18 +81,19 @@ float Action::getGoldEffect(ABot * const executor){
 		}
 		case Action_Type::Evade:
 		{
-			//TODO
+			//No Effect on Gold
 			break;
 		}
 		case Action_Type::Move_Toward:
 		{
 			float ratio = executee->getGoldWorth() / maxGoldGain;
-			result = ratio * (1 - (executor->distanceToEnd-1) / executor->fieldWidth) * maxInsistEffect; //distToEnd-1 so we don't have 1-1=0 for effect
+			result = (ratio * (1 - (executor->distanceToEnd-1) / executor->fieldWidth) + 0.25)* maxInsistEffect; //distToEnd-1 so we don't have 1-1=0 for effect
+			result = result > maxInsistEffect ? maxInsistEffect : result;
 			break;
 		}
 		case Action_Type::Defend_Area:
 		{
-
+			//No Effect on Gold
 		}
 	}
 	return result;
@@ -97,58 +103,59 @@ float Action::getLiveEffect(ABot * const executor){
 	switch (action_type){
 		case Action_Type::Kill:
 		{
-			//Temporary fix, this will work because of the values for exp for units and endzones, but should be fixed in the progression patch
 			//Some sort of THREAT indicator interface would be a good idea here
 			//!!!!!!!!!!!!!!!!! TODO !!!!!!!!!!!!!!!!!!!!!!!!!
-			float ratio = executor->level / executee->getExpWorth(); //progExecutee->level;
+			float ratio = executee->getExpWorth() / (1.5 * executor->level); //progExecutee->level;
+			ratio = ratio > 1 ? 1 : ratio;
 			result = -ratio * maxInsistEffect;
-			/*gameMode->*/
 			break; 
 		}
 		
 		case Action_Type::Evade:
 		{
-			//TODO
+			float ratio = executee->getExpWorth() / (1.5 * executor->level); //progExecutee->level;
+			ratio = ratio > 1 ? 1 : ratio;
+			result = ratio * maxInsistEffect;
 			break;
 		}
 		case Action_Type::Move_Toward:
 		{
-			//TODO
+			//No Effect on Live
 			break;
 		}
 		case Action_Type::Defend_Area:
 		{
-
+			//No Effect on Live
 		}
 	}
 	return result;
 }
 float Action::getDefendEffect(ABot * const executor){
 	float result = 0;
+	AResearchProjectGameMode *gameMode = (AResearchProjectGameMode*)executor->GetWorld()->GetAuthGameMode();
+	float tg1 = gameMode->Team_1_Gold > 0 ? gameMode->Team_1_Gold : 1;
+	float tg2 = gameMode->Team_2_Gold > 0 ? gameMode->Team_2_Gold : 1;
+	float tgRatio = executor->team == ETeam_Enum::team1 ? tg2 / tg1 : tg1 / tg2;
+	tgRatio = tgRatio > maxInsistEffect ? maxInsistEffect : tgRatio;
 	switch (action_type){
 		case Action_Type::Kill:{
-			AResearchProjectGameMode *gameMode = (AResearchProjectGameMode*)executor->GetWorld()->GetAuthGameMode();
-			float tg1 = gameMode->Team_1_Gold > 0 ? gameMode->Team_1_Gold : 1;
-			float tg2 = gameMode->Team_2_Gold > 0 ? gameMode->Team_2_Gold : 1;
-			float tgRatio = executor->team == ETeam_Enum::team1 ? tg2 / tg1 : tg1 / tg2;
-			tgRatio = tgRatio > maxInsistEffect ? maxInsistEffect : tgRatio;
-			result = tgRatio * ((ABot*)executee)->distanceToEnd / ((ABot*)executee)->fieldWidth;
-			
+			result = tgRatio * (1 - ((ABot*)executee)->distanceToEnd / ((ABot*)executee)->fieldWidth);
 			break;
 		}
 		case Action_Type::Evade:
 		{
-			result = -maxInsistEffect/2;
+			result = -tgRatio/2;
 			break;
 		}
 		case Action_Type::Move_Toward:
 		{
-			result = (1 - executor->distanceToEnd / executor->fieldWidth) * -maxInsistEffect;;
+			result = (1 - executor->distanceToEnd / executor->fieldWidth) * -tgRatio;;
 			break;
 		}
 		case Action_Type::Defend_Area:
 		{
-
+			float danger = executor->team == ETeam_Enum::team1 ? tg2 / gameMode->Gold_To_Win : tg1 / gameMode->Gold_To_Win;
+			result = tgRatio * danger;
 		}
 	}
 	return result;
@@ -166,7 +173,7 @@ void Action::executeAction(ABot *executor){
 		break;
 	case Action_Type::Defend_Area:
 	{
-
+		executor->runDefendAreaBehavior((ADefensePoint*)executee);
 	}
 	}
 }
