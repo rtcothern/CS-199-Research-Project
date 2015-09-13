@@ -29,8 +29,12 @@ void ABot::BeginPlay()
 	TArray<Goal> goals;
 	Goal g1 = Goal(Goal::Goal_Type::Exp, this);
 	Goal g2 = Goal(Goal::Goal_Type::Gold, this);
+	Goal g3 = Goal(Goal::Goal_Type::Live, this);
+	Goal g4 = Goal(Goal::Goal_Type::Defend, this);
 	goals.Emplace(g1);
 	goals.Emplace(g2);
+	goals.Emplace(g3);
+	goals.Emplace(g4);
 
 	worldModel = WorldModel(goals);
 
@@ -82,6 +86,7 @@ void ABot::acquireExp(uint8 exp){
 		if ((int32)(exp + toAdd) >= level){
 			toAdd -= level;
 			level++;
+			this->GetCharacterMovement()->MaxWalkSpeed += 50;
 		}
 		else{
 			exp += toAdd;
@@ -107,6 +112,7 @@ void ABot::runAttackBehavior_Implementation(AUnit* target){
 	//Blank intentionally
 }
 void ABot::runMoveTowardBehavior_Implementation(AEndZone* moveTarget){
+	//Blank intentionally
 }
 
 void ABot::scoreKill(ABot* victim){

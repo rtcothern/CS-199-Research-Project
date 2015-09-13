@@ -15,7 +15,8 @@ public:
 	enum class Action_Type{
 		Kill,
 		Evade,
-		Move_Toward
+		Move_Toward,
+		Defend_Area
 	};
 
 	~Action();

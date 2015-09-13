@@ -21,7 +21,7 @@ float Goal::getDC() const{
 	switch (goal_type)
 	{
 	case Goal_Type::Gold:
-		result = insistence*insistence*insistence;
+		result = 1.5*insistence*insistence;
 		break;
 	case Goal_Type::Exp:
 		result = insistence*insistence;
@@ -30,7 +30,7 @@ float Goal::getDC() const{
 		result = insistence*insistence*insistence;
 		break;
 	case Goal_Type::Defend:
-		result = 1.5*insistence*insistence;
+		result = 2.5*insistence*insistence;
 		break;
 	}
 	return result; 
@@ -72,11 +72,8 @@ void Goal::applyAction(Action * action){
 
 void Goal::update(float deltaTime){
 	AResearchProjectGameMode *gameMode = (AResearchProjectGameMode*)owner->GetWorld()->GetAuthGameMode();
-	switch (goal_type)
-	{
-	case Goal_Type::Gold:{
-		float teamGold = 0, enemyTeamGold = 0;
-		switch (owner->team){
+	float teamGold = 0, enemyTeamGold = 0;
+	switch (owner->team){
 		case ETeam_Enum::team1:
 			teamGold = gameMode->Team_1_Gold;
 			enemyTeamGold = gameMode->Team_2_Gold;
@@ -85,20 +82,27 @@ void Goal::update(float deltaTime){
 			teamGold = gameMode->Team_2_Gold;
 			enemyTeamGold = gameMode->Team_1_Gold;
 			break;
+	}
+	float maxGold = gameMode->Gold_To_Win;
+
+	switch (goal_type)
+	{
+		case Goal_Type::Gold:{
+			teamGold = teamGold == 0 ? 1 : teamGold; //Only relevant when team gold is 0 to avoid div by 0 error
+			changePerMinute = enemyTeamGold / teamGold * (teamGold / maxGold + 1);
+			break;
 		}
-		float maxGold = gameMode->Gold_To_Win;
-		teamGold = teamGold == 0 ? 1 : teamGold; //Only relevant when team gold is 0 to avoid div by 0 error
-		changePerMinute = enemyTeamGold / teamGold * (teamGold / maxGold + 1);
-		break;
-	}
-	case Goal_Type::Exp:{
-		changePerMinute = gameMode->avgLevel / owner->level;
-		break;
-	}
-	case Goal_Type::Live:
-		break;
-	case Goal_Type::Defend:
-		break;
+		case Goal_Type::Exp:{
+			changePerMinute = gameMode->avgLevel / owner->level;
+			break;
+		}
+		case Goal_Type::Live:
+			changePerMinute = enemyTeamGold / maxGold * maxInsistence/3;
+			break;
+		case Goal_Type::Defend:{
+			changePerMinute = enemyTeamGold / maxGold * maxInsistence;
+			break;
+		}
 	}
 	insistence += changePerMinute * deltaTime / 60;
 }

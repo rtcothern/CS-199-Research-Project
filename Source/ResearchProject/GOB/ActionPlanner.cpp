@@ -22,7 +22,7 @@ Action* ActionPlanner::planAction(const WorldModel& world, const int32& maxDepth
 	int32 currentDepth = 0;
 
 	Action* bestAction = nullptr;
-	int32 bestDC = INT32_MAX;
+	int32 bestDC = INT32_MAX, firstDCOfBest = INT32_MAX;
 	std::stack<int32> heurDCS;
 	heurDCS.push(bestDC);
 
@@ -37,6 +37,12 @@ Action* ActionPlanner::planAction(const WorldModel& world, const int32& maxDepth
 			if (currentDC < bestDC){
 				bestDC = currentDC;
 				bestAction = actions[0];
+				firstDCOfBest = worlds[1].calculateDC();
+			}
+			else if (currentDC == bestDC && worlds[1].calculateDC() < firstDCOfBest){
+				bestDC = currentDC;
+				bestAction = actions[0];
+				firstDCOfBest = worlds[1].calculateDC();
 			}
 			currentDepth--;
 			heurDCS.pop();
