@@ -31,7 +31,6 @@ AResearchProjectCharacter::AResearchProjectCharacter()
 	TopDownCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
 	TopDownCameraComponent->AttachTo(CameraBoom, USpringArmComponent::SocketName);
 	TopDownCameraComponent->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
-
 }
 
 void AResearchProjectCharacter::BeginPlay(){

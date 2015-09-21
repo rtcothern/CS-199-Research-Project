@@ -36,6 +36,8 @@ public:
 		void runMoveTowardBehavior(AEndZone* moveTarget);
 	UFUNCTION(BlueprintNativeEvent, Category = Unit_Behavior)
 		void runDefendAreaBehavior(class ADefensePoint* dPoint);
+	UFUNCTION(BlueprintNativeEvent, Category = Unit_Behavior)
+		void runNoBehavior();
 
 	UFUNCTION(BlueprintCallable, Category = Unit_Scoring)
 		void scoreKill(ABot* victim);
@@ -66,26 +68,31 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = Unit_Stats)
 		int32 goldEarned;
 
-	const uint16 baseGoldWorth = 3;
-	const float numZones = 8;
-	const float fieldWidth = 4000;
-	const float zoneWidth = fieldWidth / numZones;
+	const uint16 baseGoldWorth = 1;
 	const float aggroRange = 1000;
+	const static uint8 MaxLevel = 10;
 
 	void acquireExp(uint8 exp);
 
 	uint16 getRemainingExp();
 	uint16 getExpForNextLevel();
+	float getSpeed(){ return this->GetCharacterMovement()->MaxWalkSpeed; };
 
 	//Overridden functions
 	uint16 getExpWorth() override;
 	uint16 getGoldWorth() override;
 
+	static float getAPFrequency() { return apFrequency; };
+
+	WorldModel* getWorldModel(){ return &worldModel; };
+
+	class AResearchProjectGameMode *gameMode;
+
 protected:
 	class ActionPlanner* planner;
 	WorldModel worldModel;
-
 private:
 	void Score(Action* scoringAction, uint16 goldWorth, uint16 expWorth);
-	float apTimer, apFrequency;
+	float apTimer;
+	const static float apFrequency;
 };

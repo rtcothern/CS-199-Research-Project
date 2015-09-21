@@ -34,7 +34,8 @@ public:
 	float getLiveEffect(ABot * const executor);
 	float getDefendEffect(ABot * const executor);
 
-	void executeAction(class ABot *executor);
+	void evalDuration(FVector & execLocation, const float & execSpeed);
+	void executeAction(ABot *executor);
 
 protected:
 	Action(float duration);

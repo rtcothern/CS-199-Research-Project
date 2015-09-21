@@ -16,13 +16,19 @@ AResearchProjectGameMode::AResearchProjectGameMode()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
-	NumBots = 4;
+	NumBots = 10;
 	Team_1_Gold = 0;
 	Team_2_Gold = 0;
 	Gold_To_Win = 300;
 	NumPlayers = 0;
 	MinRespawnDelay = 2;
 	NumSpectators = 1;
+	numZones = 8;
+}
+
+void AResearchProjectGameMode::BeginPlay(){
+	Super::BeginPlay();
+	zoneWidth = fieldWidth / numZones;
 }
 void AResearchProjectGameMode::updateGameAttributes(int32 t1g, int32 t2g, int32 avgLvl){
 	Team_1_Gold = t1g;

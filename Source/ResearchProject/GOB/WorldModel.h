@@ -16,15 +16,21 @@ public:
 
 	float calculateDC();
 	Action* nextAction();
-	void applyAction(Action* action);
+	void applyAction(Action* action, int8 oldActionIndex);
 	void setActions(TArray<Action*> actions);
 	void updateGoals(float deltaTime);
 
 	TArray<Goal> getCharGoals(){ return charGoals; };
 
+	void setBotAttr(FVector location, float speed);
+
+	int8 getCurrActInd();
+
 private:
 	TArray<Action*> applicableActions;
 	TArray<Goal> charGoals;
-	uint8 currentActionIndex = 0;
-	//FResource charResource;
+	int8 currentActionIndex = 0;
+	FVector ownerLocation;
+	float ownerSpeed;
+	TArray<bool> disabledActions;
 };

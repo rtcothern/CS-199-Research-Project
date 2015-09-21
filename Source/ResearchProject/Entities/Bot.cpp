@@ -7,15 +7,15 @@
 #include "Bot.h"
 #include "EndZone.h"
 #include "DefensePoint.h"
+#include "../ResearchProjectGameMode.h"
 
-
+const float ABot::apFrequency = 1;
 // Sets default values
 ABot::ABot() : AUnit()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	exp = 0;
 	level = 1;
-	apFrequency = 1;
 }
 ABot::~ABot(){
 	delete planner;
@@ -42,6 +42,8 @@ void ABot::BeginPlay()
 	planner = new ActionPlanner();
 
 	apTimer = 0;
+	
+	gameMode = (AResearchProjectGameMode*)GetWorld()->GetAuthGameMode();
 
 	Super::BeginPlay();
 }
@@ -52,7 +54,7 @@ void ABot::Tick( float DeltaTime )
 	if (apTimer >= apFrequency){
 		//apTimer -= apFrequency;
 		apTimer = 0;
-		distanceToEnd = distanceToEnd > fieldWidth ? fieldWidth : distanceToEnd;
+		distanceToEnd = distanceToEnd > gameMode->fieldWidth ? gameMode->fieldWidth : distanceToEnd;
 		executeNextAction();
 	}
 	else{
@@ -70,32 +72,38 @@ void ABot::executeNextAction(){
 			possibleActions.Append(unitItr->getExposedActions());
 	}
 	for (TActorIterator<AEndZone> unitItr(GetWorld()); unitItr; ++unitItr){
-		if (unitItr->team != this->team && unitItr->GetUniqueID() != this->GetUniqueID())
+		if (unitItr->team != this->team)
 			possibleActions.Append(unitItr->getExposedActions());
 	}
 	for (TActorIterator<ADefensePoint> unitItr(GetWorld()); unitItr; ++unitItr){
-		if (unitItr->team == this->team && unitItr->GetUniqueID() != this->GetUniqueID())
+		if (unitItr->team == this->team)
 			possibleActions.Append(unitItr->getExposedActions());
 	}
 	if (possibleActions.Num() > 0){
 		worldModel.setActions(possibleActions);
-		Action* nextAction = planner->planAction(worldModel, 2);
+		worldModel.setBotAttr(this->GetActorLocation(), this->GetCharacterMovement()->MaxWalkSpeed);
+		Action* nextAction = planner->planAction(worldModel, 3);
 		if (nextAction)
 			nextAction->executeAction(this);
+		else {
+			runNoBehavior();
+		}
 	} 
 }
 
 void ABot::acquireExp(uint8 exp){
-	uint32 toAdd = exp;
-	while (toAdd > 0){
-		if ((int32)(exp + toAdd) >= level){
-			toAdd -= level;
-			level++;
-			this->GetCharacterMovement()->MaxWalkSpeed += 50;
-		}
-		else{
-			exp += toAdd;
-			toAdd = 0;
+	if (level < ABot::MaxLevel){
+		uint32 toAdd = exp;
+		while (toAdd > 0){
+			if ((int32)(exp + toAdd) >= level){
+				toAdd -= level;
+				level++;
+				this->GetCharacterMovement()->MaxWalkSpeed += 50;
+			}
+			else{
+				exp += toAdd;
+				toAdd = 0;
+			}
 		}
 	}
 }
@@ -110,7 +118,7 @@ uint16 ABot::getExpWorth(){
 	return getExpForNextLevel();
 }
 uint16 ABot::getGoldWorth(){
-	return baseGoldWorth + ((fieldWidth-distanceToEnd) / zoneWidth - 0.5);
+	return baseGoldWorth + ((gameMode->fieldWidth - distanceToEnd) / gameMode->zoneWidth - 0.5);
 }
 
 void ABot::runAttackBehavior_Implementation(AUnit* target){
@@ -120,7 +128,10 @@ void ABot::runMoveTowardBehavior_Implementation(AEndZone* moveTarget){
 	//Blank intentionally
 }
 void ABot::runDefendAreaBehavior_Implementation(ADefensePoint* dPoint){
-
+	//Blank intentionally
+}
+void ABot::runNoBehavior_Implementation(){
+	//Blank intentionally
 }
 
 
@@ -131,16 +142,16 @@ void ABot::scoreKill(ABot* victim){
 			break;
 		}
 	}
-	victim->Die();
+	//victim->Die();
 }
 void ABot::scoreEndZone(AEndZone* enemyEndZone){
 	if (enemyEndZone && friendlyEndZone){
 		Score(enemyEndZone->getExposedActions()[0], enemyEndZone->getGoldWorth(), enemyEndZone->getExpWorth());
-		Respawn();
+		//Respawn();
 	}
 }
 void ABot::Score(Action* scoringAction, uint16 goldWorth, uint16 expWorth){
-	worldModel.applyAction(scoringAction);
+	worldModel.applyAction(scoringAction, -1);
 	goldEarned += goldWorth;
 	acquireExp(expWorth);
 }
@@ -149,6 +160,7 @@ void ABot::Die(){
 	Respawn();
 }
 void ABot::Respawn(){
+	alive = true;
 	this->SetActorLocation(friendlyEndZone->GetActorLocation());
 }
 

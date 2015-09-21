@@ -11,6 +11,8 @@ class AResearchProjectGameMode : public AGameMode
 public:
 	AResearchProjectGameMode();
 
+	virtual void BeginPlay() override;
+
 	/** Current gold of Team 1. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Game_Attributes)
 		int32 Team_1_Gold;
@@ -22,6 +24,12 @@ public:
 		int32 Gold_To_Win;
 	UPROPERTY(BlueprintReadOnly, Category = Game_Attributes)
 		int32 avgLevel;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Game_Attributes)
+		int32 fieldWidth;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Game_Attributes)
+		int32 numZones;
+	float zoneWidth;
 
 	UFUNCTION(BlueprintCallable, Category = Game_Attributes)
 		void updateGameAttributes(int32 t1g, int32 t2g, int32 avgLvl);

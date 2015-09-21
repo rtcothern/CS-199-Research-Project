@@ -53,7 +53,7 @@ Action* ActionPlanner::planAction(const WorldModel& world, const int32& maxDepth
 		if (nextAction){
 			WorldModel nextWorld(worlds[currentDepth]);
 			actions[currentDepth] = nextAction;
-			nextWorld.applyAction(nextAction);
+			nextWorld.applyAction(nextAction, worlds[currentDepth].getCurrActInd()-1);
 			worlds[currentDepth + 1] = nextWorld;
 			currentDepth++;
 			heurDCS.push(currentDC);

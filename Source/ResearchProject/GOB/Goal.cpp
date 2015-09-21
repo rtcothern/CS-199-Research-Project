@@ -71,7 +71,7 @@ void Goal::applyAction(Action * action){
 }
 
 void Goal::update(float deltaTime){
-	AResearchProjectGameMode *gameMode = (AResearchProjectGameMode*)owner->GetWorld()->GetAuthGameMode();
+	AResearchProjectGameMode *gameMode = owner->gameMode;
 	float teamGold = 0, enemyTeamGold = 0;
 	switch (owner->team){
 		case ETeam_Enum::team1:
